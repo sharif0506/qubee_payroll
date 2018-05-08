@@ -17,7 +17,7 @@
                         {{ csrf_field() }} 
 
                         <div class="form-group">
-                            <input class="form-control" placeholder="Employee username" name="username" type="text" value="{{ old('email') }}" autocomplete="off" spellcheck="false" required />
+                            <input class="form-control" placeholder="User ID" name="user_id" type="text" value="{{ old('user_id') }}" autocomplete="off" spellcheck="false" required />
                         </div>
 
                         <div class="form-group">

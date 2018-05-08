@@ -16,11 +16,10 @@ class CreateEmployeeTable extends Migration {
             $table->increments('id');
             $table->string('user_id', 32)->unique();
             $table->string('email', 100)->unique();
-            $table->string('first_name', 100);
-            $table->string('last_name', 100);
-            $table->integer('employee_id')->unique();
+            $table->string('employee_id',20)->unique();
             $table->string('password');
             $table->string('company_code');
+            $table->string('status');
             $table->timestamps();
         });
     }

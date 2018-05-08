@@ -18,3 +18,7 @@ Route::get('/registration', 'EmployeeAuthenticationController@showRegistration')
 
 Route::post('/registration', 'EmployeeAuthenticationController@registration');
 
+Route::get('/home', 'PayrollController@index');
+
+
+

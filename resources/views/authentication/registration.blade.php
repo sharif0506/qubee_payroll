@@ -2,9 +2,9 @@
 @section('title','Registration')
 
 @section('content')
-<br />
+
 <div class="row vertical-offset-100">
-    <div class="col-md-4 col-md-offset-4">
+    <div class="col-md-6 col-md-offset-3">
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h3 class="panel-title" align="center" >Account Information</h3>
@@ -17,7 +17,7 @@
                         {{ csrf_field() }} 
 
                         <div class="form-group">
-                            <input class="form-control" placeholder="Employee Username" name="username" type="text" value="{{ old('username') }}" autocomplete="off" spellcheck="false" required />
+                            <input class="form-control" placeholder="User ID" name="user_id" type="text" value="{{ old('user_id') }}" autocomplete="off" spellcheck="false" required />
                         </div>
 
                         <div class="form-group">
@@ -31,11 +31,10 @@
                                 <option value="{{$companyCode->id}}">{{$companyCode->code_name}}</option>
                                 @endforeach
                             </select>
-
                         </div>
 
                         <div class="form-group">
-                            <input class="form-control" placeholder="Employee ID" name="company_code" type="text" value="{{ old('email') }}" autocomplete="off" spellcheck="false" required />
+                            <input class="form-control" placeholder="Employee ID" name="employee_id" type="text" value="{{ old('employee_id') }}" autocomplete="off" spellcheck="false" required />
                         </div>
 
                         <div class="form-group">
@@ -43,7 +42,7 @@
                         </div>
 
                         <div class="form-group">
-                            <input class="form-control" placeholder="Confirm Password" name="password" type="password_confirmation" required />
+                            <input class="form-control" placeholder="Confirm Password" name="password_confirmation" type="password" required />
                         </div>
 
                         <input class="btn btn-success btn-block" type="submit" value="Create Account" />
