@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-private xmlns="http://www.netbeans.org/ns/project-private/1">
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+        <group>
+            <file>file:/E:/xampp/htdocs/qubee_payroll/config/auth.php</file>
+            <file>file:/E:/xampp/htdocs/qubee_payroll/app/User.php</file>
+            <file>file:/E:/xampp/htdocs/qubee_payroll/app/Http/Controllers/EmployeeAuthenticationController.php</file>
+            <file>file:/E:/xampp/htdocs/qubee_payroll/app/Employee.php</file>
+            <file>file:/E:/xampp/htdocs/qubee_payroll/resources/views/layouts/layout.blade.php</file>
+        </group>
+    </open-files>
+</project-private>

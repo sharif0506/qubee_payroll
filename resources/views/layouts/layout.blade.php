@@ -26,7 +26,7 @@
             <div>
                 <div class="collapse navbar-collapse" id="myNavbar">
                     <ul class="nav navbar-nav navbar-right">
-                        @if(Auth::check())
+                        @if(Auth::guard('employees')->check())
                         <li><a href="{{ url('/') }}">Home</a></li>
                         <li><a href="{{ url('events') }}">Events</a></li>                            
                         <li><a href="{{ url('partnarship') }}">Partnarship</a></li>
@@ -36,7 +36,7 @@
                         <li><a href="{{ url('contact') }}">Contact</a></li>
                         @endif
 
-                        @if(!Auth::check())
+                        @if(!Auth::guard('employees')->check())
                         <li><a href="{{ url('/login') }}">Login</a></li>
                         <li><a href="{{ url('/registration') }}">Registration</a></li>
                         @endif

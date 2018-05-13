@@ -26,8 +26,7 @@ class EmployeeAuthenticationController extends Controller {
         $userID = $request->user_id;
         $password = $request->password;
 
-        if (Auth::attempt(['user_id' => $userID, 'password' => $password])) {
-
+        if (Auth::guard('employees')->attempt(['user_id' => $userID, 'password' => $password])) {
             return view('home.index');
         } else {
             return redirect('/login');
@@ -52,6 +51,11 @@ class EmployeeAuthenticationController extends Controller {
 
         $employee->save();
         return redirect('/home');
+    }
+
+    function logout() {
+        Auth::logout();
+        return redirect('/login');
     }
 
 }
