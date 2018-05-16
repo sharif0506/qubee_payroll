@@ -16,7 +16,7 @@ class EmployeeAuthenticatedMiddleware {
      */
     public function handle($request, Closure $next) {
         if (!Auth::guard('employees')->check()) {
-            return redirect('/login');
+            return redirect('/login')->withErrors(['errors' => 'You have to login first']);
         }
         return $next($request);
     }
