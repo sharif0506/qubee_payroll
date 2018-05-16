@@ -2,6 +2,7 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+<<<<<<< HEAD
         <group>
             <file>file:/D:/xampp/htdocs/qubee_payroll/app/CompanyCode.php</file>
             <file>file:/D:/xampp/htdocs/qubee_payroll/app/User.php</file>
@@ -10,5 +11,8 @@
             <file>file:/D:/xampp/htdocs/qubee_payroll/app/Http/Controllers/EmployeeAuthenticationController.php</file>
             <file>file:/D:/xampp/htdocs/qubee_payroll/resources/views/authentication/registration.blade.php</file>
         </group>
+=======
+        <group/>
+>>>>>>> 3289e968f294fd9ee0a7c86fb5e8571a20182229
     </open-files>
 </project-private>

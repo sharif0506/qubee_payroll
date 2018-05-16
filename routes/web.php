@@ -10,15 +10,20 @@
   | contains the "web" middleware group. Now create something great!
   |
  */
-Route::get('/login', 'EmployeeAuthenticationController@showLogin');
 
-Route::post('/login', 'EmployeeAuthenticationController@login');
+Route::group(['middleware' => 'not.authenticated.employee'], function() {
 
-Route::get('/registration', 'EmployeeAuthenticationController@showRegistration');
+    Route::get('/', 'EmployeeAuthenticationController@showLogin');
 
-Route::post('/registration', 'EmployeeAuthenticationController@registration');
+    Route::get('/login', 'EmployeeAuthenticationController@showLogin');
 
-Route::get('/home', 'PayrollController@index');
+    Route::post('/login', 'EmployeeAuthenticationController@login');
 
+    Route::get('/registration', 'EmployeeAuthenticationController@showRegistration');
 
+    Route::post('/registration', 'EmployeeAuthenticationController@registration');
+});
+
+Route::get('/home', 'PayrollController@index')->middleware('authenticated.employee');
+Route::get('/logout', 'EmployeeAuthenticationController@logout');
 
