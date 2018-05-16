@@ -9,7 +9,7 @@ use Auth;
 
 class EmployeeAuthenticationController extends Controller {
 
-    public function showLogin() {
+    public function showLogin() {      
         return view('authentication.login');
     }
 
@@ -27,7 +27,7 @@ class EmployeeAuthenticationController extends Controller {
         $password = $request->password;
 
         if (Auth::guard('employees')->attempt(['user_id' => $userID, 'password' => $password])) {
-            return view('home.index');
+            return redirect('/home');
         } else {
             return redirect('/login');
         }
@@ -54,7 +54,7 @@ class EmployeeAuthenticationController extends Controller {
     }
 
     function logout() {
-        Auth::logout();
+        Auth::guard('employees')->logout();
         return redirect('/login');
     }
 

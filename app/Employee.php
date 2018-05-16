@@ -8,7 +8,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 class Employee extends Authenticatable {
 
     use Notifiable;
-
+    
+    public $remember_token=false;
     protected $guard = 'employees';
 
     /**
