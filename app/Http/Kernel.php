@@ -61,5 +61,6 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'authenticated.employee' => \App\Http\Middleware\EmployeeAuthenticatedMiddleware::class,
         'not.authenticated.employee' => \App\Http\Middleware\EmployeeNotAuthenticatedMiddleware::class,
+        'authenticated.admin' => \App\Http\Middleware\AdminAuthenticationMiddleware::class,
     ];
 }

@@ -28,9 +28,8 @@ class EmployeeAuthenticationController extends Controller {
 
         if (Auth::guard('employees')->attempt(['user_id' => $userID, 'password' => $password])) {
             return redirect('/home');
-        } else {
-            return redirect('/login');
         }
+        return redirect('/login')->withErrors('Credential does not match');
     }
 
     public function registration(Request $request) {
