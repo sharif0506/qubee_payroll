@@ -33,6 +33,7 @@ Route::post('/admin/login', 'AdminAuthenticationController@login');
 
 Route::group(['middleware' => 'authenticated.admin'], function() {
     Route::get('/admin/home', 'PayrollAdminController@index');
+    Route::get('/admin/user', 'PayrollAdminController@manageUser');
 });
 
 Route::get('/logout', 'EmployeeAuthenticationController@logout');

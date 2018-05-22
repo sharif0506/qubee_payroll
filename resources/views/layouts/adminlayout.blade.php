@@ -27,7 +27,22 @@
                 <div class="collapse navbar-collapse" id="myNavbar">
                     <ul class="nav navbar-nav navbar-right">
                         @if(Auth::check())
-                            <li><a href="{{ url('admin/logout') }}">Logout</a></li>                       
+                        <li><a href="#">Payroll Generate</a></li>                       
+                        <li><a href="#">Reports</a></li>                       
+                        <li><a href="#">Manage Employee</a></li>                       
+                        <!--<li><a href="#">App Settings</a></li>-->
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                App Setting
+                                <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a href="{{ url('/admin/user') }}">User Management</a></li>
+                                <li><a href="#">Manage Departmant</a></li>
+                                <li><a href="#">Test</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="{{ url('admin/logout') }}">Logout</a></li>                       
                         @endif
                     </ul>
                 </div>
@@ -35,7 +50,7 @@
         </div>
     </nav>
 
-    <br /> <br /> <br /> 
+    <br /> <br /> 
 
     <div class="container">
         @yield('content') 
