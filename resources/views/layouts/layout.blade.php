@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <head>
     <title>@yield('title')</title>
+    <link rel="shortcut icon" type="image/png" href="{{asset('images/favicon.PNG')}}">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -27,20 +28,12 @@
                 <div class="collapse navbar-collapse" id="myNavbar">
                     <ul class="nav navbar-nav navbar-right">
                         @if(Auth::guard('employees')->check())
-<!--                        <li><a href="{{ url('/') }}">Home</a></li>
-                        <li><a href="{{ url('events') }}">Events</a></li>                            
-                        <li><a href="{{ url('partnarship') }}">Partnarship</a></li>
-                        <li><a href="{{ url('about') }}"> About</a></li>
-                        <li><a href="{{ url('team') }}">Team</a></li>
-                        <li><a href="{{ url('blog') }}">Blog</a></li>
-                        <li><a href="{{ url('contact') }}">Contact</a></li>-->
-                        <li><a href="{{ url('logout') }}">Logout</a></li>
-                        
+                            <li><a href="{{ url('logout') }}">Logout</a></li>
                         @endif
 
                         @if(!Auth::guard('employees')->check())
-                        <li><a href="{{ url('/login') }}">Login</a></li>
-                        <li><a href="{{ url('/registration') }}">Registration</a></li>
+                            <li><a href="{{ url('/login') }}">Login</a></li>
+                            <li><a href="{{ url('/registration') }}">Registration</a></li>
                         @endif
                     </ul>
                 </div>

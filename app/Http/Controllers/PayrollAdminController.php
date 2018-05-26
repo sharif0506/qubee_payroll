@@ -14,7 +14,6 @@ class PayrollAdminController extends Controller {
     public function manageUser() {
         $users = User::all();
 
-
         return view('admin.user', ['users' => $users]);
     }
 

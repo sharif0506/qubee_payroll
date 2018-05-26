@@ -7,7 +7,7 @@
     <hr />
 
     <div class="col-sm-3">
-        <a href="#" class="btn btn-primary form-control" role="button">Add a System User</a>
+        <a href="#" class="btn btn-primary form-control" role="button"><i class="fas fa-plus-circle"></i> Add a System User</a>
     </div>
 
 
@@ -31,8 +31,10 @@
                     <td>{{$user->employee_id}}</td>
                     <td>{{$user->status}}</td>
                     <td>
-                        <a href="#" class="btn btn-warning" role="button"> deactivate </a>
-                        <a href="#" class="btn btn-danger" role="button"> delete </a>
+                        @if(Auth::user()->user_id != $user->user_id) 
+                            <a href="#" class="btn btn-warning" role="button"> deactivate </a>
+                            <a href="#" class="btn btn-danger" role="button"> delete </a>
+                        @endif   
                     </td>
                 </tr>
                 @endforeach
