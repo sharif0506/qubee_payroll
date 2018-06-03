@@ -36,6 +36,10 @@
                         <div class="form-group">
                             <input class="form-control" placeholder="Employee ID" name="employee_id" type="text" value="{{ old('employee_id') }}" autocomplete="off" spellcheck="false" required />
                         </div>
+                        
+                        <div class="form-group">
+                            <input class="form-control" placeholder="Mobile No (Example:01841000000)" name="mobile_no" type="text" value="{{ old('mobile_no') }}" autocomplete="off" spellcheck="false" required />
+                        </div>
 
                         <div class="form-group">
                             <input class="form-control" placeholder="Password" name="password" type="password" required />

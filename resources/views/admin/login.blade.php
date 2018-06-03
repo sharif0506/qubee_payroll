@@ -13,9 +13,7 @@
 
                 <form method="post" action="{{ url('admin/login') }}">
                     <fieldset>
-
                         {{ csrf_field() }} 
-
                         <div class="form-group">
                             <input class="form-control" placeholder="Admin ID" name="user_id" type="text" value="{{ old('user_id') }}" autocomplete="off" spellcheck="false" required />
                         </div>

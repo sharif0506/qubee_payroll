@@ -16,7 +16,8 @@ class CreateEmployeeTable extends Migration {
             $table->increments('id');
             $table->string('user_id', 32)->unique();
             $table->string('email', 100)->unique();
-            $table->string('employee_id',20)->unique();
+            $table->string('employee_id', 20)->unique();
+            $table->string('mobile_no', 20);
             $table->string('password');
             $table->string('company_code');
             $table->string('status');

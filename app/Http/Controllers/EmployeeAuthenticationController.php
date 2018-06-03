@@ -38,6 +38,7 @@ class EmployeeAuthenticationController extends Controller {
             'email' => 'required|email|unique:employees,email|max:100',
             'company_code' => 'required|numeric',
             'employee_id' => 'required|unique:employees,employee_id|max:20',
+            'mobile_no' => 'required|numeric',
             'password' => 'required|min:6|max:32|confirmed',
         ]);
         $employee = new Employee();
@@ -45,6 +46,7 @@ class EmployeeAuthenticationController extends Controller {
         $employee->email = $request->email;
         $employee->company_code = $request->company_code;
         $employee->employee_id = $request->employee_id;
+        $employee->mobile_no = $request->mobile_no;
         $employee->password = bcrypt($request->password);
         $employee->status = 'active';
         $employee->save();

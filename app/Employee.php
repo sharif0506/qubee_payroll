@@ -23,6 +23,7 @@ class Employee extends Authenticatable {
         'employee_id',
         'password',
         'company_code',
+        'mobile_no',
         'status'
     ];
 
