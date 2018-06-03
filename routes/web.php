@@ -28,7 +28,8 @@ Route::group(['middleware' => 'authenticated.employee'], function() {
     Route::get('/home', 'PayrollController@index');
     Route::get('/change/username', 'EmployeeInfoController@showEditUsername');
     Route::post('/change/username', 'EmployeeInfoController@editUsername');
-    Route::get('/change/mobile', 'EmployeeInfoController@index');
+    Route::get('/change/mobile', 'EmployeeInfoController@showEditMobileNo');
+    Route::post('/change/mobile', 'EmployeeInfoController@editMobileNo');
     Route::get('/change/password', 'EmployeeInfoController@index');
 });
 

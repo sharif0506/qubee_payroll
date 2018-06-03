@@ -55,7 +55,7 @@
                     <a href="{{ url('/home') }}" class="list-group-item"> <i class="glyphicon glyphicon-home"> </i> <strong> Home </strong></a>
                     <a href="{{ url('/change/username') }}" class="list-group-item"><i class="glyphicon glyphicon-user"> </i><strong> Change User Name </strong></a>
                     <a href="#" class="list-group-item"><i class="glyphicon glyphicon-lock"> </i><strong> Change Password </strong></a>
-                    <a href="#" class="list-group-item"><i class="glyphicon glyphicon-phone"> </i><strong> Update Mobile No </strong></a>
+                    <a href="{{ url('/change/mobile') }}" class="list-group-item"><i class="glyphicon glyphicon-phone"> </i><strong> Update Mobile No </strong></a>
                     <a href="#" class="list-group-item"><i class="glyphicon glyphicon-envelope"> </i><strong> Contact Us </strong></a>
                     <a href="{{ url('/logout') }}" class="list-group-item"><i class="glyphicon glyphicon-log-out"> </i><strong> Logout </strong></a>
                 </div>
