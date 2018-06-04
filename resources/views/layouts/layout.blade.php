@@ -52,12 +52,12 @@
                 <div class="list-group">
                     <h4 class="list-group-item text-center">Md. Sharifur Rahman</h4>
                     <!--<h4 class="list-group-item">Sharif</h4>-->
-                    <a href="{{ url('/home') }}" class="list-group-item"> <i class="glyphicon glyphicon-home"> </i> <strong> Home </strong></a>
-                    <a href="{{ url('/change/username') }}" class="list-group-item"><i class="glyphicon glyphicon-user"> </i><strong> Change User Name </strong></a>
-                    <a href="#" class="list-group-item"><i class="glyphicon glyphicon-lock"> </i><strong> Change Password </strong></a>
-                    <a href="{{ url('/change/mobile') }}" class="list-group-item"><i class="glyphicon glyphicon-phone"> </i><strong> Update Mobile No </strong></a>
-                    <a href="#" class="list-group-item"><i class="glyphicon glyphicon-envelope"> </i><strong> Contact Us </strong></a>
-                    <a href="{{ url('/logout') }}" class="list-group-item"><i class="glyphicon glyphicon-log-out"> </i><strong> Logout </strong></a>
+                    <a href="{{ url('/home') }}" class="list-group-item"> <i class="glyphicon glyphicon-home"> </i>  Home </a>
+                    <a href="{{ url('/change/username') }}" class="list-group-item"><i class="glyphicon glyphicon-user"> </i> Change User Name </a>
+                    <a href="{{ url('/change/password') }}" class="list-group-item"><i class="glyphicon glyphicon-lock"> </i> Change Password </a>
+                    <a href="{{ url('/change/mobile') }}" class="list-group-item"><i class="glyphicon glyphicon-phone"> </i> Update Mobile No </a>
+                    <a href="#" class="list-group-item"><i class="glyphicon glyphicon-envelope"> </i> Contact Us </a>
+                    <a href="{{ url('/logout') }}" class="list-group-item"><i class="glyphicon glyphicon-log-out"> </i> Logout </a>
                 </div>
             </div>
 
