@@ -53,7 +53,7 @@ class EmployeeInfoController extends Controller {
             "current_password" => "required",
             "new_password" => "required|min:6|max:32|confirmed"
         ]);
-        
+
         $currentUserID = Auth::guard("employees")->user()->id;
         $employee = Employee::findOrFail($currentUserID);
         $currentPassword = $request->current_password;
@@ -62,7 +62,7 @@ class EmployeeInfoController extends Controller {
             return redirect("/change/password")->withErrors([
                         "errors" => "Current password does not match."
             ]);
-        }     
+        }
         $newPassword = bcrypt($request->new_password);
         $employee->password = $newPassword;
         $employee->save();

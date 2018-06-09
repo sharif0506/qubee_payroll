@@ -26,16 +26,15 @@ Route::group(['middleware' => 'not.authenticated.employee'], function() {
 
 Route::group(['middleware' => 'authenticated.employee'], function() {
     Route::get('/home', 'PayrollController@index');
-   
+
     Route::get('/change/username', 'EmployeeInfoController@showEditUsername');
     Route::post('/change/username', 'EmployeeInfoController@editUsername');
-    
+
     Route::get('/change/mobile', 'EmployeeInfoController@showEditMobileNo');
     Route::post('/change/mobile', 'EmployeeInfoController@editMobileNo');
-    
+
     Route::get('/change/password', 'EmployeeInfoController@showChangePassword');
     Route::post('/change/password', 'EmployeeInfoController@changePassword');
-    
 });
 
 Route::get('/admin/login', 'AdminAuthenticationController@showLogin');
@@ -44,6 +43,21 @@ Route::post('/admin/login', 'AdminAuthenticationController@login');
 Route::group(['middleware' => 'authenticated.admin'], function() {
     Route::get('/admin/home', 'PayrollAdminController@index');
     Route::get('/admin/user', 'PayrollAdminController@manageUser');
+
+
+    Route::get('/admin/department', 'DepartmentsController@index');
+    Route::get('/admin/department/add', 'DepartmentsController@showAdd');
+    Route::post('/admin/department/add', 'DepartmentsController@add');
+    Route::get('/admin/department/edit/{id}', 'DepartmentsController@showEdit')->where('id', '[0-9]+');
+    Route::post('/admin/department/edit/{id}', 'DepartmentsController@edit')->where('id', '[0-9]+');
+    Route::get('/admin/department/delete/{id}', 'DepartmentsController@delete')->where('id', '[0-9]+');
+
+    Route::get('/admin/subdepartment', 'SubDepartmentsController@index');
+    Route::get('/admin/subdepartment/add', 'SubDepartmentsController@showAdd');
+    Route::post('/admin/subdepartment/add', 'SubDepartmentsController@add');
+    Route::get('/admin/subdepartment/edit/{id}', 'SubDepartmentsController@showEdit')->where('id', '[0-9]+');
+    Route::post('/admin/subdepartment/edit/{id}', 'SubDepartmentsController@edit')->where('id', '[0-9]+');
+    Route::get('/admin/subdepartment/delete/{id}', 'SubDepartmentsController@delete')->where('id', '[0-9]+');
 });
 
 Route::get('/logout', 'EmployeeAuthenticationController@logout');

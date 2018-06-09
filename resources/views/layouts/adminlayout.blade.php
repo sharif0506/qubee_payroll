@@ -39,8 +39,8 @@
                             </a>
                             <ul class="dropdown-menu">
                                 <li><a href="{{ url('/admin/user') }}">User Management</a></li>
-                                <li><a href="#">Manage Departmant</a></li>
-                                <li><a href="#">Test</a></li>
+                                <li><a href="{{  url('/admin/department') }}">Manage Departmant</a></li>
+                                <li><a href="{{  url('/admin/subdepartment') }}">Manage Sub-department</a></li>
                             </ul>
                         </li>
                         <li><a href="{{ url('admin/logout') }}">Logout</a></li>                       
