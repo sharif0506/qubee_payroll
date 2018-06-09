@@ -52,12 +52,21 @@ Route::group(['middleware' => 'authenticated.admin'], function() {
     Route::post('/admin/department/edit/{id}', 'DepartmentsController@edit')->where('id', '[0-9]+');
     Route::get('/admin/department/delete/{id}', 'DepartmentsController@delete')->where('id', '[0-9]+');
 
+
     Route::get('/admin/subdepartment', 'SubDepartmentsController@index');
     Route::get('/admin/subdepartment/add', 'SubDepartmentsController@showAdd');
     Route::post('/admin/subdepartment/add', 'SubDepartmentsController@add');
     Route::get('/admin/subdepartment/edit/{id}', 'SubDepartmentsController@showEdit')->where('id', '[0-9]+');
     Route::post('/admin/subdepartment/edit/{id}', 'SubDepartmentsController@edit')->where('id', '[0-9]+');
     Route::get('/admin/subdepartment/delete/{id}', 'SubDepartmentsController@delete')->where('id', '[0-9]+');
+
+
+    Route::get('/admin/salary', 'SalariesController@index');
+    Route::get('/admin/salary/add', 'SalariesController@showAdd');
+    Route::post('/admin/salary/add', 'SalariesController@add');
+    Route::get('/admin/salary/edit/{id}', 'SalariesController@showEdit')->where('id', '[0-9]+');
+    Route::post('/admin/salary/edit/{id}', 'SalariesController@edit')->where('id', '[0-9]+');
+    Route::get('/admin/salary/delete/{id}', 'SalariesController@delete')->where('id', '[0-9]+');
 });
 
 Route::get('/logout', 'EmployeeAuthenticationController@logout');
