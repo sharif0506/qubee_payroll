@@ -67,6 +67,7 @@ Route::group(['middleware' => 'authenticated.admin'], function() {
     Route::get('/admin/salary/edit/{id}', 'SalariesController@showEdit')->where('id', '[0-9]+');
     Route::post('/admin/salary/edit/{id}', 'SalariesController@edit')->where('id', '[0-9]+');
     Route::get('/admin/salary/delete/{id}', 'SalariesController@delete')->where('id', '[0-9]+');
+ 
     
     Route::get('/admin/employee', 'EmployeesController@index');
     Route::get('/admin/employee/add', 'EmployeesController@showAdd');

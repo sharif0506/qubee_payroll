@@ -30,8 +30,7 @@
                         @if(Auth::check())
                         <li><a href="#">Payroll Generate</a></li>                       
                         <li><a href="#">Reports</a></li>                       
-                        <li><a href="#">Manage Employee</a></li>                       
-                        <!--<li><a href="#">App Settings</a></li>-->
+                        <li><a href="{{url('/admin/employee') }}">Manage Employee</a></li>                       
                         <li class="dropdown">
                             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                                 App Setting
