@@ -37,8 +37,8 @@
                     <div class="form-group">
                         <label> Rule: </label>    
                         <select class="form-control"  name="condition" required >
-                            <option value="100%">Full 100%</option>
-                            <option value="lowest">Lowest Limit</option>
+                            <option value="100">Full 100%</option>
+                            <option value="Lowest">Lowest Limit</option>
                         </select>
                     </div>
 

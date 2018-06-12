@@ -17,17 +17,17 @@
 
                     <div class="form-group">
                         <!--<label> Tax Limit 1 </label>-->    
-                        <input class="form-control" placeholder="Tax Limit 1 (percentage of basic salary)" name="tax_limit1" type="text" value="{{ $salary->tax_limit1 }}" autocomplete="off" spellcheck="false" />
+                        <input class="form-control" placeholder="Tax Limit 1 (percentage of basic salary)" name="tax_limit1" type="number" value="{{ $salary->tax_limit1 }}" autocomplete="off" spellcheck="false" />
                     </div>
 
                     <div class="form-group">
                         <!--<label> Tax Limit 2 </label>-->    
-                        <input class="form-control" placeholder="Tax Limit 2" name="tax_limit2" type="text" value="{{ $salary->tax_limit2 }}" autocomplete="off" spellcheck="false" />
+                        <input class="form-control" placeholder="Tax Limit 2" name="tax_limit2" type="number" value="{{ $salary->tax_limit2 }}" autocomplete="off" spellcheck="false" />
                     </div>
 
                     <div class="form-group">
                         <!--<label> Tax Limit 3 </label>-->    
-                        <input class="form-control" placeholder="Tax Limit 3" name="tax_limit3" type="text" value="{{ $salary->tax_limit3 }}" autocomplete="off" spellcheck="false" />
+                        <input class="form-control" placeholder="Tax Limit 3" name="tax_limit3" type="number" value="{{ $salary->tax_limit3 }}" autocomplete="off" spellcheck="false" />
                     </div>
                 </div>
 
@@ -37,7 +37,7 @@
                         <label> Condition: </label>    
                         <select class="form-control"  name="condition" required >
                             <option value="100" {{ $salary->condition == '100' ? 'selected="selected"' : '' }}>Full 100%</option>
-                            <option value="min" {{ $salary->condition == 'min' ? 'selected="selected"' : '' }}>Lowest Limit</option>
+                            <option value="Lowest" {{ $salary->condition == 'Lowest' ? 'selected="selected"' : '' }}>Lowest Limit</option>
                         </select>
                     </div>
 

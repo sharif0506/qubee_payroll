@@ -137,10 +137,10 @@
                 <div class="col-md-4">
                     @foreach($salaries as $salary)
                     <div class="checkbox">
-                        <label><input  type="checkbox" name="{{ $salary->name }}" value="{{ $salary->id }}"><strong>{{ $salary->name }} </strong></label>
+                        <label><input  type="checkbox" name="salaries[id]" value="{{ $salary->id }}"><strong>{{ $salary->name }} </strong></label>
                     </div>
                     <div>
-                        <input class="form-control input-sm" placeholder="Enter {{ $salary->name }} Amount " name="amount_of_salary_{{$salary->id}}" type="text" value="{{ old($salary->name) }}" autocomplete="off" spellcheck="false" />
+                        <input class="form-control" placeholder="Enter {{ $salary->name }} Amount " name="salaries[amount]" type="number" value="{{ old($salary->name) }}" autocomplete="off" spellcheck="false" />
                     </div> 
                     @endforeach
                 </div> 
@@ -171,9 +171,19 @@
             </div>
         </fieldset> 
         <br />
-        <div class="col-md-4 col-md-offset-4">
-            <input class="btn btn-success form-control" type="submit" value="Create New Employee" />
+        <div class="col-md-12">
+            <div class="col-md-2" ></div>
+            <div class="col-md-4">
+                <a href="{{ url("/admin/employee") }}" class="btn btn-primary form-control" >
+                    Back to Employee Management
+                </a> 
+            </div>
+            <div class="col-md-4">
+                <input class="btn btn-success form-control" type="submit" value="Create New Employee" />
+            </div>
+            <div class="col-md-2" ></div>
         </div>
+
     </form>
     <br /><br /><br />
 </div>
