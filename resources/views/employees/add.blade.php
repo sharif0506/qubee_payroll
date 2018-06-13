@@ -71,7 +71,7 @@
                     <input class="form-control input-sm" placeholder="Enter Last Name" name="last_name" type="text" value="{{ old('last_name') }}" autocomplete="off" spellcheck="false" required />
 
                     <label> Sub Department: </label>
-                    <select class="form-control input-sm"  name="department_id" required >
+                    <select class="form-control input-sm"  name="sub_department_id" required >
                         @foreach($subDepartments as $subDepartment)
                         <option value="{{$subDepartment->id}}" > {{$subDepartment->name}} </option>
                         @endforeach
@@ -119,12 +119,12 @@
                 </div>
                 <div class="col-md-4">
                     <label> Password:</label>
-                    <input class="form-control input-sm" placeholder="Password" name="password" type="password" value="{{ old('password') }}" required />
+                    <input class="form-control input-sm" placeholder="Password" name="password" type="password" required />
                 </div>
 
                 <div class="col-md-4">
                     <label> Password Confirmation:</label>
-                    <input class="form-control input-sm" placeholder="Confirm Password" name="password_confirmation" type="password" value="{{ old('password_confirmation') }}" required />
+                    <input class="form-control input-sm" placeholder="Confirm Password" name="password_confirmation" type="password"  required />
 
                 </div>
             </div>
@@ -135,13 +135,19 @@
 
             <div class="col-md-12" >
                 <div class="col-md-4">
+                    @php 
+                      $index = 0;
+                    @endphp
                     @foreach($salaries as $salary)
                     <div class="checkbox">
-                        <label><input  type="checkbox" name="salaries[id]" value="{{ $salary->id }}"><strong>{{ $salary->name }} </strong></label>
+                        <label><input  type="checkbox" name="salaries[{{ $index }}][id]" value="{{ $salary->id }}" required = "{{ $salary->name == 'Basic' ? 'required' : '' }}" /><strong>{{ $salary->name }} </strong></label>
                     </div>
                     <div>
-                        <input class="form-control" placeholder="Enter {{ $salary->name }} Amount " name="salaries[amount]" type="number" value="{{ old($salary->name) }}" autocomplete="off" spellcheck="false" />
-                    </div> 
+                        <input class="form-control" placeholder="Enter {{ $salary->name }} Amount " name="salaries[{{ $index }}][amount]" value="{{ old("salaries[".$index."][amount]") }}" type="number" {{ $salary->name == 'Basic' ? 'required' : '' }}  autocomplete="off" />
+                    </div>
+                    @php 
+                      $index++;
+                    @endphp
                     @endforeach
                 </div> 
                 <div class="col-md-2">

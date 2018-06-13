@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use App\Department;
 
 class Employee extends Authenticatable {
 
@@ -27,21 +28,8 @@ class Employee extends Authenticatable {
 //        'status'
 //    ];
 
-    public function salaries() {
-        $employee_id = $this->employee_id;
-        $salaries = Salary::where('employee_id', $employee_id)->get();
-        return $salaries;
-    }
-
     public function details() {
-        $employee_id = $this->employee_id;
-        $employee_details = EmployeeDetail::where('employee_id', $employee_id)->first();
-        return $employee_details;
-    }
-
-    public function departmentName($department_id) {
-        $department = Department::findOrFail($department_id);
-        return $department->name;
+        return $this->hasOne('App\EmployeeDetail', 'employee_id', 'employee_id');
     }
 
 }

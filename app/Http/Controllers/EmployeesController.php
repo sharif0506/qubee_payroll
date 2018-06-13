@@ -14,6 +14,9 @@ class EmployeesController extends Controller {
 
     public function index() {
         $employees = Employee::all();
+        if ($employees->isEmpty()) {
+            return view("employees.index", ["employees" => FALSE]);
+        }
         return view("employees.index", ["employees" => $employees]);
     }
 
@@ -46,6 +49,7 @@ class EmployeesController extends Controller {
             'designation' => 'required|max:50',
             'date_of_birth' => 'required|date',
             'date_of_join' => 'required|date',
+            'salaries' => 'required|array'
         ]);
 
         $employee = new Employee();
@@ -56,6 +60,7 @@ class EmployeesController extends Controller {
         $employee->mobile_no = $request->mobile_no;
         $employee->password = bcrypt($request->password);
         $employee->status = $request->status;
+        $employee->save();
 
         $employeeDetails = new EmployeeDetail();
         $employeeDetails->employee_id = $request->employee_id;
@@ -75,26 +80,56 @@ class EmployeesController extends Controller {
         $employeeDetails->level = $request->level;
         $employeeDetails->address = $request->address;
 
+        $employeeDetails->save();
+
+        $basicSalaryAmount = $this->getBasicSalary($request->salaries);
 
         foreach ($request->salaries as $salary) {
+
             if (isset($salary['id']) && isset($salary['amount'])) {
                 $employeeSalary = new EmployeeSalary();
                 $employeeSalary->employee_id = $request->employee_id;
                 $employeeSalary->salary_id = $salary['id'];
                 $employeeSalary->amount = $salary['amount'];
-                $employeeSalary->taxable_amount = $this->getTaxableSalary($salary['id'], $salary['amount']);
+                $employeeSalary->taxable_amount = $this->getTaxableSalary($salary['id'], $salary['amount'], $basicSalaryAmount);
+                $employeeSalary->save();
             }
         }
+        return redirect()->back()->with("message", "New Employee added successfully");
     }
 
-    private function getTaxableSalary($salary_id, $salary_amount) {
-        $taxable_salary = 0;
-        $salary = Salary::findOrFail($salary_id);
+    private function getTaxableSalary($salaryID, $salaryAmount, $basicSalaryAmount) {
+        $taxableSalary = 0;
+        $salary = Salary::findOrFail($salaryID);
         if ($salary->condition == 100) {
-            $taxable_salary = $salary_amount * 12;  //yearly taxable salary
+            $taxableSalary = $salaryAmount * 12;  //yearly taxable salary
         } else if ($salary->condition == "Lowest") {
-            //calculate limit1 amount and find lowest
+            $tax_limit1 = ($salary->tax_limit1 !== NULL) ? ($basicSalaryAmount * (($salary->tax_limit1) / 100)) : 0;
+            $tax_limit2 = ($salary->tax_limit2 !== NULL) ? $salary->tax_limit2 : 0;
+            $tax_limit3 = ($salary->tax_limit3 !== NULL) ? $salary->tax_limit3 : 0;
+            $taxExemptedAmount = min($tax_limit1, $tax_limit2, $tax_limit3);
+            if (($salaryAmount * 12) > $taxExemptedAmount) {
+                $taxableSalary = ($salaryAmount * 12) - $taxExemptedAmount;
+            }
         }
+        return $taxableSalary;
+    }
+
+    private function getBasicSalaryID() {
+        $basicSalary = Salary::where('name', 'Basic')->first();
+        $basicSalaryID = $basicSalary->id;
+        return $basicSalaryID;
+    }
+
+    private function getBasicSalary($salaries) {
+        $basicSalary = 0;
+        foreach ($salaries as $salary) {
+            if ($salary['id'] == $this->getBasicSalaryID()) {
+                $basicSalary = $salary['amount'];
+                break;
+            }
+        }
+        return $basicSalary;
     }
 
     public function showEdit($id) {

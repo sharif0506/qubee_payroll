@@ -56,7 +56,7 @@ class SalariesController extends Controller {
         $salary->custom_field1 = $request->custom_field1;
         $salary->custom_field2 = $request->custom_field2;
         $salary->save();
-        return redirect()->back()->with("message", "New salary added successfully");
+        return redirect()->back()->with("message", "Salary updated successfully");
     }
 
     public function delete(Request $request) {

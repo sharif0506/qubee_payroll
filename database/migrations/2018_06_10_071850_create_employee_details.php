@@ -23,7 +23,7 @@ class CreateEmployeeDetails extends Migration {
             $table->integer('sub_department_id')->nullable();
             $table->date('date_of_birth');
             $table->date('date_of_join');
-            $table->date('date_of_leave');
+            $table->date('date_of_leave')->nullable();
             $table->string('grade')->nullable();
             $table->string('step')->nullable();
             $table->string('band')->nullable();

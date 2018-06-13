@@ -13,6 +13,7 @@
 
     <br /><br /><br />
     <div class="col-sm-12">
+
         <table class="table table-hover table-bordered">
             <thead >
                 <tr>
@@ -25,34 +26,39 @@
                     <th class="text-center"> Operation </th> 
                 </tr>
             </thead>
+            @if($employees)
             <tbody>
                 @php 
-                $counter = 1;
+                    $counter = 1;
                 @endphp
 
                 @foreach($employees as $employee)
                 <tr class="text-center">
-                    <td>{{ $counter }}</td>
-                    <td>{{ $employee->employee_id }}</td>                    
-                    <td>{{ $employee->details()->first_name ." ". $employee->details()->last_name }}</td>                    
-                    <td>{{ $employee->details()->designation }}</td>                    
-                    <td>{{ $employee->departmentName($employee->details()->department_id) }}</td>                    
-                    <td>{{ $employee->status }}</td>
+                    <td> {{ $counter }} </td>
+                    <td> {{ $employee->employee_id }} </td>                    
+                    <td> {{ $employee->details->first_name }} </td>                    
+                    <td> {{ $employee->details->designation }} </td>                                      
+                    <td> {{ $employee->details->department->name }} </td>                    
+                    <td> {{ $employee->status }} </td>
                     <td>
-                        <a href="{{ url("admin/employee/".$employee->id) }}" class="btn-link" > <u> Details</u> </a>
+                        <a href="{{ url("admin/employee/".$employee->id) }}" class="btn-link" > <u style="color: darkblue"> Details </u> </a>
                         &emsp;
-                        <a href="{{ url("admin/employee/edit/".$employee->id) }}" class="btn-link" > <u>Edit</u> </a>
+                        <a href="{{ url("admin/employee/edit/".$employee->id) }}" class="btn-link" > <u style="color: darkcyan"> Edit </u> </a>
                         &emsp;
-                        <a href="{{ url("admin/employee/delete/".$employee->id) }}" class="btn-link" onclick="return confirm('Are you sure you want to delete the subdepartment?');" > <u>Delete</u>  </a>
+                        <a href="{{ url("admin/employee/delete/".$employee->id) }}" class="btn-link" onclick="return confirm('Are you sure you want to delete the employee?');" > 
+                            <u style="color: darkred"> Delete </u>  
+                        </a>
                     </td>
                 </tr>
                 @php
-                $counter++;
+                    $counter++;
                 @endphp
                 @endforeach
 
             </tbody>
+            @endif
         </table>
+
     </div>
 
 </div>
