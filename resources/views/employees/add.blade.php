@@ -134,46 +134,28 @@
             <legend>Salary Information</legend>
 
             <div class="col-md-12" >
+
+                @php 
+                $index = 0;
+                @endphp
+                @foreach($salaries as $salary)
                 <div class="col-md-4">
-                    @php 
-                      $index = 0;
-                    @endphp
-                    @foreach($salaries as $salary)
                     <div class="checkbox">
-                        <label><input  type="checkbox" name="salaries[{{ $index }}][id]" value="{{ $salary->id }}" required = "{{ $salary->name == 'Basic' ? 'required' : '' }}" /><strong>{{ $salary->name }} </strong></label>
+                        <label><input  type="checkbox" name="salaries[{{ $index }}][id]" value="{{ $salary->id }}"  {{ $salary->name == 'Basic' ? 'required' : '' }} /><strong>{{ $salary->name }} </strong></label>
                     </div>
                     <div>
                         <input class="form-control" placeholder="Enter {{ $salary->name }} Amount " name="salaries[{{ $index }}][amount]" value="{{ old("salaries[".$index."][amount]") }}" type="number" {{ $salary->name == 'Basic' ? 'required' : '' }}  autocomplete="off" />
                     </div>
                     @php 
-                      $index++;
+                    $index++;
                     @endphp
-                    @endforeach
                 </div> 
-                <div class="col-md-2">
-                    {{ csrf_field() }}
-                </div>
-                <div class="col-md-6">
+                @endforeach
 
-                    @if(count($errors))
-                    <div class="alert alert-danger">
-                        <ul>
-                            @foreach($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                    @endif
 
-                    @if(session("message"))
-                    <div class="alert alert-success">
-                        <ul>
-                            <li>{{ session("message") }}</li>
-                        </ul>
-                    </div>
-                    @endif
+                {{ csrf_field() }}
 
-                </div>
+
             </div>
         </fieldset> 
         <br />
@@ -188,6 +170,31 @@
                 <input class="btn btn-success form-control" type="submit" value="Create New Employee" />
             </div>
             <div class="col-md-2" ></div>
+        </div>
+        
+        <br /><br />
+        
+        <div class="col-md-12" >
+            <div class="col-md-6 col-md-offset-3">
+                @if(count($errors))
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+                @endif
+
+
+                @if(session("message"))
+                <div class="alert alert-success">
+                    <ul>
+                        <li>{{ session("message") }}</li>
+                    </ul>
+                </div>
+                @endif
+            </div>
         </div>
 
     </form>

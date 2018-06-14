@@ -104,10 +104,10 @@ class EmployeesController extends Controller {
         if ($salary->condition == 100) {
             $taxableSalary = $salaryAmount * 12;  //yearly taxable salary
         } else if ($salary->condition == "Lowest") {
-            $tax_limit1 = ($salary->tax_limit1 !== NULL) ? ($basicSalaryAmount * (($salary->tax_limit1) / 100)) : 0;
+            $tax_limit1 = ($salary->tax_limit1 !== NULL) ? ($basicSalaryAmount * (($salary->tax_limit1) / 100) * 12) : 0;
             $tax_limit2 = ($salary->tax_limit2 !== NULL) ? $salary->tax_limit2 : 0;
             $tax_limit3 = ($salary->tax_limit3 !== NULL) ? $salary->tax_limit3 : 0;
-            $taxExemptedAmount = min($tax_limit1, $tax_limit2, $tax_limit3);
+            $taxExemptedAmount = min(array_filter(array($tax_limit1, $tax_limit2, $tax_limit3)));
             if (($salaryAmount * 12) > $taxExemptedAmount) {
                 $taxableSalary = ($salaryAmount * 12) - $taxExemptedAmount;
             }
