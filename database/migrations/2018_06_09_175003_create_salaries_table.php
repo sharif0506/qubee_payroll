@@ -19,6 +19,7 @@ class CreateSalariesTable extends Migration {
             $table->string('tax_limit2')->nullable();
             $table->string('tax_limit3')->nullable();
             $table->string('condition');
+            $table->string('salary_type'); //monthly or occasionally
             $table->string('custom_field1')->nullable();
             $table->string('custom_field2')->nullable();
             $table->string('status');

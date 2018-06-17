@@ -21,7 +21,7 @@
                     <img style="max-width:75px;margin-top: -2px " src="{{asset('images/logo.jpg')}}" />                    
                 </a>
                 <a class="navbar-brand" href="{{ url('/admin/login') }}" style="font-size: 20px" >                    
-                    Payroll Admin Panel                 
+                    Payroll Admin                 
                 </a>
             </div>
             <div>
@@ -57,13 +57,15 @@
     </div>
 
     <br /> <br />
-    <footer class="container-fluid text-center navbar-fixed-bottom" style="background-color: lightsteelblue;">
-        <div style="margin-top:15px;">
-            <p>
-                Qubee © 2018, All Rights Reserved
-            </p>                           
+     <footer class="container-fluid text-center navbar-fixed-bottom" style="background-color: lightsteelblue;">
+        <div style="margin-top:10px;">
+            <h4>
+                Qubee © {{date("Y")}}, All Rights Reserved 
+                <br />
+                Powered By - IT & Billing
+            </h4>
         </div>
-    </footer>    
+    </footer>     
 
 </body>
 

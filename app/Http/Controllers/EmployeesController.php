@@ -28,7 +28,7 @@ class EmployeesController extends Controller {
     public function showAdd() {
         $departments = Department::where('status', 'Active')->get();
         $subDepartments = SubDepartment::where('status', 'Active')->get();
-        $salaries = Salary::where('status', 'Active')->get();
+        $salaries = Salary::where('salary_type', 'Monthly')->where('status', 'Active')->get();
         return view("employees.add", [
             "departments" => $departments,
             "subDepartments" => $subDepartments,
@@ -91,7 +91,7 @@ class EmployeesController extends Controller {
                 $employeeSalary->employee_id = $request->employee_id;
                 $employeeSalary->salary_id = $salary['id'];
                 $employeeSalary->amount = $salary['amount'];
-                $employeeSalary->taxable_amount = $this->getTaxableSalary($salary['id'], $salary['amount'], $basicSalaryAmount);
+//                $employeeSalary->taxable_amount = $this->getTaxableSalary($salary['id'], $salary['amount'], $basicSalaryAmount);
                 $employeeSalary->save();
             }
         }

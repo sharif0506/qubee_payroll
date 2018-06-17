@@ -17,7 +17,7 @@ class EmployeeSalariesTable extends Migration {
             $table->integer('employee_id');
             $table->integer('salary_id');
             $table->integer('amount');
-            $table->integer('taxable_amount');
+//            $table->integer('taxable_amount');
             $table->timestamps();
         });
     }

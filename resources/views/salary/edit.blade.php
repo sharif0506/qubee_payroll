@@ -16,17 +16,17 @@
                     </div>
 
                     <div class="form-group">
-                        <!--<label> Tax Limit 1 </label>-->    
+                        <label> Tax Limit 1 (percentage of basic salary)</label>    
                         <input class="form-control" placeholder="Tax Limit 1 (percentage of basic salary)" name="tax_limit1" type="number" value="{{ $salary->tax_limit1 }}" autocomplete="off" spellcheck="false" />
                     </div>
 
                     <div class="form-group">
-                        <!--<label> Tax Limit 2 </label>-->    
+                        <label> Tax Limit 2 </label>    
                         <input class="form-control" placeholder="Tax Limit 2" name="tax_limit2" type="number" value="{{ $salary->tax_limit2 }}" autocomplete="off" spellcheck="false" />
                     </div>
 
                     <div class="form-group">
-                        <!--<label> Tax Limit 3 </label>-->    
+                        <label> Tax Limit 3 </label>    
                         <input class="form-control" placeholder="Tax Limit 3" name="tax_limit3" type="number" value="{{ $salary->tax_limit3 }}" autocomplete="off" spellcheck="false" />
                     </div>
                 </div>
@@ -38,6 +38,7 @@
                         <select class="form-control"  name="condition" required >
                             <option value="100" {{ $salary->condition == '100' ? 'selected="selected"' : '' }}>Full 100%</option>
                             <option value="Lowest" {{ $salary->condition == 'Lowest' ? 'selected="selected"' : '' }}>Lowest Limit</option>
+                            <option value="Tax_Free" {{ $salary->condition == 'Tax_Free' ? 'selected="selected"' : '' }}>Tax Exempted</option>
                         </select>
                     </div>
 
@@ -49,6 +50,14 @@
                         </select>
                     </div>
 
+                     <div class="form-group">
+                        <label> Type: </label>
+                        <select class="form-control"  name="salary_type" required >
+                            <option value="Monthly" {{ $salary->salary_type == 'Monthly' ? 'selected="selected"' : '' }}>Monthly</option>
+                            <option value="Occasional" {{ $salary->salary_type == 'Occasional' ? 'selected="selected"' : '' }}>Occasional</option>
+                        </select>
+                    </div>
+                    
                     <div class="form-group">
                         <input class="btn btn-success btn-block" type="submit" value="Update Salary" />
                     </div>

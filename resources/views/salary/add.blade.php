@@ -16,17 +16,17 @@
                     </div>
 
                     <div class="form-group">
-                        <!--<label> Tax Limit 1 </label>-->    
-                        <input class="form-control" placeholder="Tax Limit 1 (percentage of basic salary)" name="tax_limit1" type="text" value="{{ old('tax_limit1') }}" autocomplete="off" spellcheck="false" />
+                        <label> Tax Limit 1 (percentage of basic salary)</label>    
+                        <input class="form-control" placeholder="Tax Limit 1 " name="tax_limit1" type="text" value="{{ old('tax_limit1') }}" autocomplete="off" spellcheck="false" />
                     </div>
 
                     <div class="form-group">
-                        <!--<label> Tax Limit 2 </label>-->    
+                        <label> Tax Limit 2 </label>    
                         <input class="form-control" placeholder="Tax Limit 2" name="tax_limit2" type="text" value="{{ old('tax_limit2') }}" autocomplete="off" spellcheck="false" />
                     </div>
 
                     <div class="form-group">
-                        <!--<label> Tax Limit 3 </label>-->    
+                        <label> Tax Limit 3 </label>    
                         <input class="form-control" placeholder="Tax Limit 3" name="tax_limit3" type="text" value="{{ old('tax_limit3') }}" autocomplete="off" spellcheck="false" />
                     </div>
 
@@ -35,18 +35,27 @@
                 <div class="col-md-6">
 
                     <div class="form-group">
-                        <label> Rule: </label>    
+                        <label> Rule: </label>
                         <select class="form-control"  name="condition" required >
                             <option value="100">Full 100%</option>
                             <option value="Lowest">Lowest Limit</option>
+                            <option value="Tax_Free">Tax Exempted</option>
                         </select>
                     </div>
 
                     <div class="form-group">
-                        <label> Status: </label>    
+                        <label> Status: </label>
                         <select class="form-control"  name="status" required >
                             <option value="Active">Active</option>
                             <option value="Deactive">Deactive</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label> Type: </label>
+                        <select class="form-control"  name="salary_type" required >
+                            <option value="Monthly">Monthly</option>
+                            <option value="Occasional">Occasional</option>
                         </select>
                     </div>
 

@@ -22,6 +22,7 @@
                     <th class="text-center"> Tax Limit 2 </th>                     
                     <th class="text-center"> Tax Limit 3 </th>                     
                     <th class="text-center"> Rule </th>
+                    <th class="text-center"> Salary Type </th>
                     <th class="text-center"> Status </th>
                     <th class="text-center"> Operation </th> 
                 </tr>
@@ -39,6 +40,7 @@
                     <td>{{ $salary->tax_limit2 }}</td>                    
                     <td>{{ $salary->tax_limit3 }}</td>                    
                     <td>{{ $salary->condition }}</td>                    
+                    <td>{{ $salary->salary_type }}</td>                    
                     <td>{{ $salary->status }}</td>
                     <td>
                         <a href="{{ url("admin/salary/edit/".$salary->id) }}" class="btn-link" > <u>Edit</u> </a>

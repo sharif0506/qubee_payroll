@@ -20,7 +20,9 @@ class SalariesController extends Controller {
         $request->validate([
             "name" => "required|unique:salaries,name",
             "condition" => "required",
-            "status" => "required"
+            "status" => "required",
+            "status" => "required",
+            "salary_type" => "required",
         ]);
         $salary = new Salary();
         $salary->name = $request->name;
@@ -29,6 +31,7 @@ class SalariesController extends Controller {
         $salary->tax_limit3 = $request->tax_limit3;
         $salary->condition = $request->condition;
         $salary->status = $request->status;
+        $salary->salary_type = $request->salary_type;      
         $salary->custom_field1 = $request->custom_field1;
         $salary->custom_field2 = $request->custom_field2;
         $salary->save();
@@ -44,7 +47,8 @@ class SalariesController extends Controller {
         $request->validate([
             "name" => "required|unique:salaries,name," . $request->id,
             "condition" => "required",
-            "status" => "required"
+            "status" => "required",
+            "salary_type" => "required",
         ]);
         $salary = Salary::findOrFail($request->id);
         $salary->name = $request->name;
@@ -53,6 +57,7 @@ class SalariesController extends Controller {
         $salary->tax_limit3 = $request->tax_limit3;
         $salary->condition = $request->condition;
         $salary->status = $request->status;
+        $salary->salary_type = $request->salary_type;
         $salary->custom_field1 = $request->custom_field1;
         $salary->custom_field2 = $request->custom_field2;
         $salary->save();

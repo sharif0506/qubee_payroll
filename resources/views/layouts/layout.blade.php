@@ -21,7 +21,7 @@
                 <a class="navbar-brand" href="{{ url('/') }}" >                    
                     <img style="max-width:75px;margin-top: -2px " src="{{asset('images/logo.jpg')}}" />                    
                 </a>
-                <a class="navbar-brand" href="{{ url('/') }}" style="font-size: 20px" >                    
+                <a class="navbar-brand" href="{{ url('/') }}" style="font-size: 25px" >                    
                     Employee Payroll                  
                 </a>
             </div>
@@ -34,7 +34,6 @@
 
                         @if(!Auth::guard('employees')->check())
                         <li><a href="{{ url('/login') }}">Login</a></li>
-                        <li><a href="{{ url('/registration') }}">Registration</a></li>
                         @endif
                     </ul>
                 </div>
@@ -72,10 +71,12 @@
 
     <br /> <br />
     <footer class="container-fluid text-center navbar-fixed-bottom" style="background-color: lightsteelblue;">
-        <div style="margin-top:15px;">
-            <p>
-                Qubee © 2018, All Rights Reserved
-            </p>                           
+        <div style="margin-top:10px;">
+            <h4>
+                Qubee © {{date("Y")}}, All Rights Reserved 
+                <br />
+                Powered By - IT & Billing
+            </h4>
         </div>
     </footer>    
 
