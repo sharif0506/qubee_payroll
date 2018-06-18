@@ -26,6 +26,7 @@ Route::group(['middleware' => 'not.authenticated.employee'], function() {
 
 Route::group(['middleware' => 'authenticated.employee'], function() {
     Route::get('/home', 'PayrollController@index');
+    Route::post('/home', 'PayrollController@show');
 
     Route::get('/change/username', 'EmployeeInfoController@showEditUsername');
     Route::post('/change/username', 'EmployeeInfoController@editUsername');
@@ -74,6 +75,13 @@ Route::group(['middleware' => 'authenticated.admin'], function() {
     Route::post('/admin/employee/add', 'EmployeesController@add');
     Route::get('/admin/employee', 'EmployeesController@index');
     Route::get('/admin/employee', 'EmployeesController@index');
+    
+    
+    Route::get('/admin/payroll', 'PayrollsController@index');
+    Route::post('/admin/payroll', 'PayrollsController@generatePayroll');
+   
+    
+    
 });
 
 Route::get('/logout', 'EmployeeAuthenticationController@logout');

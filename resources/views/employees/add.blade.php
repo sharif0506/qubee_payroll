@@ -58,7 +58,6 @@
 
                 </div>
 
-
                 <div class="col-md-3">
 
                     <label> Company Code: </label>
@@ -82,7 +81,6 @@
 
                     <label> Level:</label>
                     <input class="form-control input-sm" placeholder="Enter Level" name="level" type="text" value="{{ old('level') }}" autocomplete="off" spellcheck="false" />
-
 
                 </div>
 
@@ -115,47 +113,38 @@
                 <div class="col-md-4">
                     <label> User ID:</label>
                     <input class="form-control input-sm" placeholder="User ID" name="user_id" type="text" value="{{ old('user_id') }}" autocomplete="off" spellcheck="false" required />
-
                 </div>
                 <div class="col-md-4">
                     <label> Password:</label>
                     <input class="form-control input-sm" placeholder="Password" name="password" type="password" required />
                 </div>
-
                 <div class="col-md-4">
                     <label> Password Confirmation:</label>
                     <input class="form-control input-sm" placeholder="Confirm Password" name="password_confirmation" type="password"  required />
-
                 </div>
             </div>
         </fieldset> 
         <br />
         <fieldset class="form-group">
             <legend>Salary Information</legend>
-
             <div class="col-md-12" >
-
                 @php 
-                $index = 0;
+                    $index = 0;
                 @endphp
                 @foreach($salaries as $salary)
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <div class="checkbox">
                         <label><input  type="checkbox" name="salaries[{{ $index }}][id]" value="{{ $salary->id }}"  {{ $salary->name == 'Basic' ? 'required' : '' }} /><strong>{{ $salary->name }} </strong></label>
                     </div>
                     <div>
-                        <input class="form-control" placeholder="Enter {{ $salary->name }} Amount " name="salaries[{{ $index }}][amount]" value="{{ old("salaries[".$index."][amount]") }}" type="number" {{ $salary->name == 'Basic' ? 'required' : '' }}  autocomplete="off" />
+                        <input class="form-control input-sm" placeholder="Enter {{ $salary->name }} Amount " name="salaries[{{ $index }}][amount]" value="{{ old("salaries[".$index."][amount]") }}" type="number" {{ $salary->name == 'Basic' ? 'required' : '' }}  autocomplete="off" />
                     </div>
                     @php 
-                    $index++;
+                        $index++;
                     @endphp
                 </div> 
                 @endforeach
-
-
                 {{ csrf_field() }}
-
-
             </div>
         </fieldset> 
         <br />
@@ -185,8 +174,6 @@
                     </ul>
                 </div>
                 @endif
-
-
                 @if(session("message"))
                 <div class="alert alert-success">
                     <ul>

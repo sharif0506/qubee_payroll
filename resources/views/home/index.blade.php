@@ -5,37 +5,39 @@
 
 <br>
 
-<form>
+<form method="post" action="{{url("/home")}}">
     <div class="col-md-4" >
         <label>Income Year:</label>
-        <select >
-            <!--<option value=""></option>-->
-            <!--<option value="">2017-2018</option>-->
-            <option value="">2018-2019</option>
-            <option value="">2019-2020</option>
-            <option value="">2020-2021</option>
+        <select class="input" name="income_year">
+            <option value="2018-2019">2018-2019</option>
+            <option value="2019-2020">2019-2020</option>
+            <option value="2020-2021">2020-2021</option>
         </select>
     </div>
 
-    <div class="col-md-4" ></div>
-
     <div class="col-md-4" >
         <label >Month:</label>
-        <select >
+        <select name="month">
             <!--<option value=""></option>-->
-            <option value="">January</option>
-            <option value="">February</option>
-            <option value="">March</option>
-            <option value="">April</option>
-            <option value="">May</option>
-            <option value="">June</option>
-            <option value="">July</option>
-            <option value="">August</option>
-            <option value="">September</option>
-            <option value="">October</option>
-            <option value="">November</option>
-            <option value="">December</option>
+            <option value="January">January</option>
+            <option value="February">February</option>
+            <option value="March">March</option>
+            <option value="April">April</option>
+            <option value="May">May</option>
+            <option value="June">June</option>
+            <option value="July">July</option>
+            <option value="August">August</option>
+            <option value="September">September</option>
+            <option value="October">October</option>
+            <option value="November">November</option>
+            <option value="December">December</option>
         </select>
+    </div>
+    
+    {{ csrf_field() }} 
+    
+    <div class="col-md-4" >
+        <input class="btn btn-success btn-sm" type="submit" name="search" value="Search Payroll Info" />
     </div>
 </form>
 <br /><br />
@@ -93,18 +95,56 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Modal Header 1</h4>
+                <!--                <h4 class="modal-title">Augree Wireless Broadband Bangladesh Ltd.</h4>-->
             </div>
             <div class="modal-body">
-                <p>Some text in the modal.</p>
+                <h4 class="text-center">Augree Wireless Broadband Bangladesh Ltd.</h4>
+                <p class="text-center">Payslip</p>
+                <p class="text-center">Date</p>
+                <table class="table">
+                    <tr>
+                        <td> Employee Code: </td>
+                        <td> Employee Name: </td>
+                    </tr>
+                    <tr>
+                        <td> Designation: </td>
+                        <td> Joining Date: </td>
+                    </tr>
+                    <tr>
+                        <td> Sub Department: </td>
+                        <td> TIN: </td>
+                    </tr>
+                </table>
+                <hr />
+                Component wise breakdown:
+
+
+                <table class="table table-bordered">
+                    <thead style="background-color:lightgray">
+                        <tr>
+                            <th colspan="2">Earnings</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($employeeIncomes as $employeeIncome)
+                        <tr>
+                            <td> {{$employeeIncome->salary_id}} </td>
+                            <td> {{$employeeIncome->amount}} </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+
+                </table>
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
         </div>
-
     </div>
 </div>
+
 <!--button3-->
 <button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#myModal3">Investment Notification Letter for the income year in 2017-2018</button>
 <br>
@@ -182,14 +222,14 @@
 <!--Javascript Code -->
 <script>
 <!--Print-->
-                    (function ($) {
-            $(document).ready(function () {
-                            // Add Print Classes for Modal
+            (function ($) {
+                            $(document).ready(function () {
+                    // Add Print Classes for Modal
                     $('.modal').on('shown.bs.modal', function () {
                     $('.modal,.modal-backdrop').addC lass('toPrint');
                     $('body').addClass('non-print');
                     });
-                    // Remove classes
+            // Remove classes
             $('.modal').on('hidden.bs.modal', function () {
                             $('.modal,.modal-backdrop').removeClass('toPrint');
                     $('body').removeClass('non-print');

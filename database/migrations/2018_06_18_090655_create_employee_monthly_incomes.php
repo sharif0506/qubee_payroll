@@ -4,16 +4,15 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateEmployeeMonthlyIncome extends Migration
-{
+class CreateEmployeeMonthlyIncomes extends Migration {
+
     /**
      * Run the migrations.
      *
      * @return void
      */
-    public function up()
-    {
-        Schema::create('employee_monthly_income', function (Blueprint $table) {
+    public function up() {
+        Schema::create('employee_monthly_incomes', function (Blueprint $table) {
             $table->increments('id');
             $table->string('employee_id');
             $table->string('salary_id');
@@ -29,8 +28,8 @@ class CreateEmployeeMonthlyIncome extends Migration
      *
      * @return void
      */
-    public function down()
-    {
-        Schema::dropIfExists('employee_monthly_income');
+    public function down() {
+        Schema::dropIfExists('employee_monthly_incomes');
     }
+
 }

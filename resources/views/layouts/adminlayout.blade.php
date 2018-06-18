@@ -28,7 +28,7 @@
                 <div class="collapse navbar-collapse" id="myNavbar">
                     <ul class="nav navbar-nav navbar-right">
                         @if(Auth::check())
-                        <li><a href="#">Payroll Generate</a></li>                       
+                        <li><a href="{{url('/admin/payroll') }}">Payroll Generate</a></li>                       
                         <li><a href="#">Reports</a></li>                       
                         <li><a href="{{url('/admin/employee') }}">Manage Employee</a></li>                       
                         <li class="dropdown">
@@ -56,7 +56,7 @@
         @yield('content') 
     </div>
 
-    <br /> <br />
+    <br /> <br /> <br />
      <footer class="container-fluid text-center navbar-fixed-bottom" style="background-color: lightsteelblue;">
         <div style="margin-top:10px;">
             <h4>
