@@ -102,37 +102,48 @@
                 <p class="text-center">Payslip</p>
                 <p class="text-center">Date</p>
                 <table class="table">
+                    @if(isset($employeeInfo))
                     <tr>
-                        <td> Employee Code: </td>
-                        <td> Employee Name: </td>
+                        <td> <label> Employee Code: </label> {{ $employeeInfo->employee_id }}</td>
+                        <td> <label> Employee Name: </label> {{ $employeeInfo->details->first_name }} {{ $employeeInfo->details->last_name }}</td>
                     </tr>
                     <tr>
-                        <td> Designation: </td>
-                        <td> Joining Date: </td>
+                        <td> <label> Designation: </label> {{ $employeeInfo->details->designation }} </td>
+                        <td> <label> Joining Date: </label> {{ $employeeInfo->details->date_of_join }} </td>
                     </tr>
                     <tr>
-                        <td> Sub Department: </td>
-                        <td> TIN: </td>
+                        <td> <label> Sub Department: </label> {{ $employeeInfo->details->subDepartment->name }} </td>
+                        <td> <label> TIN: </label> {{ $employeeInfo->details->tin }} </td>
                     </tr>
+                    @endif
                 </table>
                 <hr />
-                Component wise breakdown:
+                <h5>
+                   Component wise breakdown: 
+                </h5>
+                
 
 
                 <table class="table table-bordered">
                     <thead style="background-color:lightgray">
                         <tr>
-                            <th colspan="2">Earnings</th>
-
+                            <th > Earnings </th>
+                            <th > BDT </th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($employeeIncomes as $employeeIncome)
-                        <tr>
-                            <td> {{$employeeIncome->salary_id}} </td>
-                            <td> {{$employeeIncome->amount}} </td>
-                        </tr>
-                        @endforeach
+                        @if(isset($employeeIncomes))
+                            @foreach($employeeIncomes as $employeeIncome)
+                            <tr>
+                                <td> {{$employeeIncome->salary->name}} </td>
+                                <td> {{$employeeIncome->amount}} </td>
+                            </tr>
+                            @endforeach
+                            <tr>
+                                <td> <strong> Net Income </strong> </td>
+                                <td> {{ $netMonthlyIncome }} </td>
+                            </tr>
+                        @endif
                     </tbody>
 
                 </table>

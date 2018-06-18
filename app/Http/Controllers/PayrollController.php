@@ -17,14 +17,25 @@ class PayrollController extends Controller {
     }
 
     public function show(Request $request) {
-        $employeeID = Auth::guard('employees')->user()->employee_id;
+        $employeeInfo = Employee::findOrFail(Auth::guard('employees')->user()->id);
         $incomeYear = $request->income_year;
         $month = $request->month;
-        $employeePayroll = EmployeeMonthlyIncome::where('employee_id', $employeeID)
+        $employeePayroll = EmployeeMonthlyIncome::where('employee_id', $employeeInfo->employee_id)
                 ->where('month', $month)
                 ->where('income_year', $incomeYear)
                 ->get();
-        return view('home.index', ['employeeIncomes' => $employeePayroll]);
+        $netMonthlyIncome = EmployeeMonthlyIncome::where('employee_id', $employeeInfo->employee_id)
+                ->where('month', $month)
+                ->where('income_year', $incomeYear)
+                ->sum('amount');
+        
+        return view('home.index', [
+            'employeeIncomes' => $employeePayroll,
+            'employeeInfo' => $employeeInfo,
+            'netMonthlyIncome' => $netMonthlyIncome
+        ]);
+        
+        
     }
 
 }
