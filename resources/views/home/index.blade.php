@@ -121,7 +121,7 @@
                 <h5>
                     Component wise breakdown: 
                 </h5>
-                <table class="table table-bordered">
+                <table class="table table-bordered table-condensed">
                     <thead style="background-color:lightgray">
                         <tr>
                             <th > Earnings </th>
@@ -137,8 +137,31 @@
                         </tr>
                         @endforeach
                         <tr>
-                            <td class="text-center"> <strong> Net Income </strong> </td>
+                            <td class="text-right"> <strong> Net Income </strong> </td>
                             <td> {{ $netMonthlyIncome }} </td>
+                        </tr>
+
+                    </tbody>
+
+                </table>
+                <table class="table table-bordered table-condensed">
+                    <thead style="background-color:lightgray">
+                        <tr>
+                            <th > Deductions </th>
+                            <th > BDT </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+<!--                        @foreach($employeeIncomes as $employeeIncome)
+                        <tr>
+                            <td> {{$employeeIncome->salary->name}} </td>
+                            <td> {{$employeeIncome->amount}} </td>
+                        </tr>
+                        @endforeach-->
+                        <tr>
+                            <td class="text-right" > <strong> Net Deduction </strong> </td>
+                            <td > {{ "0" }} </td>
                         </tr>
 
                     </tbody>
