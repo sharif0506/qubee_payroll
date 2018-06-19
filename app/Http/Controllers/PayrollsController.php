@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Payroll;
 use App\Employee;
 use App\EmployeeSalary;
 use App\EmployeeMonthlyIncome;
@@ -18,10 +19,13 @@ class PayrollsController extends Controller {
             'income_year' => 'required',
             'month' => 'required'
         ]);
+        $payroll = new Payroll();
+        $payroll->month = $request->month;
+        $payroll->income_year = $request->income_year;
         $employees = Employee::where("status", "Active")->get();
         foreach ($employees as $employee) {
             $this->monthlyIncomeProcess($employee->employee_id, $request->month, $request->income_year);
-//            $this->monthlyIncomeTaxProcess($employee->employee_id, $request->month, $request->income_year);
+            $this->monthlyIncomeTaxProcess($employee->employee_id, $request->month, $request->income_year);
         }
         return redirect()->back()->with("message", "Payroll generated successfully");
     }

@@ -9,33 +9,32 @@
     <div class="col-md-4" >
         <label>Income Year:</label>
         <select class="input" name="income_year">
-            <option value="2018-2019">2018-2019</option>
-            <option value="2019-2020">2019-2020</option>
-            <option value="2020-2021">2020-2021</option>
+            <option value="2018-2019" {{ $incomeYear == '2018-2019' ? 'selected="selected"' : ''}}>2018-2019</option>
+            <option value="2019-2020" {{ $incomeYear == '2019-2020' ? 'selected="selected"' : ''}}>2019-2020</option>
+            <option value="2020-2021" {{ $incomeYear == '2020-2021' ? 'selected="selected"' : ''}}>2020-2021</option>
         </select>
     </div>
 
     <div class="col-md-4" >
         <label >Month:</label>
-        <select name="month">
-            <!--<option value=""></option>-->
-            <option value="January">January</option>
-            <option value="February">February</option>
-            <option value="March">March</option>
-            <option value="April">April</option>
-            <option value="May">May</option>
-            <option value="June">June</option>
-            <option value="July">July</option>
-            <option value="August">August</option>
-            <option value="September">September</option>
-            <option value="October">October</option>
-            <option value="November">November</option>
-            <option value="December">December</option>
+        <select name="month" >
+            <option value="January" {{ $month == 'January' ? 'selected="selected"' : ''}}>January</option>
+            <option value="February" {{ $month == 'February' ? 'selected="selected"' : ''}}>February</option>
+            <option value="March" {{ $month == 'March' ? 'selected="selected"' : ''}}>March</option>
+            <option value="April" {{ $month == 'April' ? 'selected="selected"' : ''}}>April</option>
+            <option value="May" {{ $month == 'May' ? 'selected="selected"' : ''}}>May</option>
+            <option value="June" {{ $month == 'June' ? 'selected="selected"' : ''}}>June</option>
+            <option value="July" {{ $month == 'July' ? 'selected="selected"' : ''}}>July</option>
+            <option value="August" {{ $month == 'August' ? 'selected="selected"' : ''}}>August</option>
+            <option value="September" {{ $month == 'September' ? 'selected="selected"' : ''}}>September</option>
+            <option value="October" {{ $month == 'October' ? 'selected="selected"' : ''}}>October</option>
+            <option value="November" {{ $month == 'November' ? 'selected="selected"' : ''}}>November</option>
+            <option value="December" {{ $month == 'December' ? 'selected="selected"' : ''}}>December</option>
         </select>
     </div>
-    
+
     {{ csrf_field() }} 
-    
+
     <div class="col-md-4" >
         <input class="btn btn-success btn-sm" type="submit" name="search" value="Search Payroll Info" />
     </div>
@@ -84,7 +83,7 @@
     </div>
 </div>
 <!--button2-->
-<button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#myModal2">Payslip with bank transfer details with for the month of April</button>
+<button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#myModal2">Payslip with bank transfer details with for the month of {{ $month }}</button>
 <br>
 
 <!-- Modal -->
@@ -98,14 +97,15 @@
                 <!--                <h4 class="modal-title">Augree Wireless Broadband Bangladesh Ltd.</h4>-->
             </div>
             <div class="modal-body">
+                @if(count($employeeIncomes)>0)
                 <h4 class="text-center">Augree Wireless Broadband Bangladesh Ltd.</h4>
                 <p class="text-center">Payslip</p>
                 <p class="text-center">Date</p>
                 <table class="table">
-                    @if(isset($employeeInfo))
+
                     <tr>
-                        <td> <label> Employee Code: </label> {{ $employeeInfo->employee_id }}</td>
                         <td> <label> Employee Name: </label> {{ $employeeInfo->details->first_name }} {{ $employeeInfo->details->last_name }}</td>
+                        <td> <label> Employee Code: </label> {{ $employeeInfo->employee_id }}</td>                        
                     </tr>
                     <tr>
                         <td> <label> Designation: </label> {{ $employeeInfo->details->designation }} </td>
@@ -115,15 +115,12 @@
                         <td> <label> Sub Department: </label> {{ $employeeInfo->details->subDepartment->name }} </td>
                         <td> <label> TIN: </label> {{ $employeeInfo->details->tin }} </td>
                     </tr>
-                    @endif
+
                 </table>
                 <hr />
                 <h5>
-                   Component wise breakdown: 
+                    Component wise breakdown: 
                 </h5>
-                
-
-
                 <table class="table table-bordered">
                     <thead style="background-color:lightgray">
                         <tr>
@@ -132,21 +129,24 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @if(isset($employeeIncomes))
-                            @foreach($employeeIncomes as $employeeIncome)
-                            <tr>
-                                <td> {{$employeeIncome->salary->name}} </td>
-                                <td> {{$employeeIncome->amount}} </td>
-                            </tr>
-                            @endforeach
-                            <tr>
-                                <td> <strong> Net Income </strong> </td>
-                                <td> {{ $netMonthlyIncome }} </td>
-                            </tr>
-                        @endif
+
+                        @foreach($employeeIncomes as $employeeIncome)
+                        <tr>
+                            <td> {{$employeeIncome->salary->name}} </td>
+                            <td> {{$employeeIncome->amount}} </td>
+                        </tr>
+                        @endforeach
+                        <tr>
+                            <td class="text-center"> <strong> Net Income </strong> </td>
+                            <td> {{ $netMonthlyIncome }} </td>
+                        </tr>
+
                     </tbody>
 
                 </table>
+                @else
+                <p> Payroll is not found </p>
+                @endif
 
             </div>
             <div class="modal-footer">
@@ -157,7 +157,7 @@
 </div>
 
 <!--button3-->
-<button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#myModal3">Investment Notification Letter for the income year in 2017-2018</button>
+<button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#myModal3">Investment Notification Letter for the income year in {{ $incomeYear }}</button>
 <br>
 
 <!-- Modal -->
@@ -182,7 +182,7 @@
 </div>
 
 <!--button4-->
-<button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#myModal4">Tax Computation for the income year in 2017-2018</button>
+<button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#myModal4">Tax Computation for the income year in {{ $incomeYear }}</button>
 <br>
 
 <!-- Modal -->
@@ -206,7 +206,7 @@
     </div>
 </div>
 <!--button5-->
-<button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#myModal5">Tax Computation for the month of April</button>
+<!--<button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#myModal5">Tax Computation for the month of April</button>-->
 <br>
 
 <!-- Modal -->
@@ -233,28 +233,28 @@
 <!--Javascript Code -->
 <script>
 <!--Print-->
-            (function ($) {
-                            $(document).ready(function () {
+                    (function ($) {
+                    $(document).ready(function () {
                     // Add Print Classes for Modal
-                    $('.modal').on('shown.bs.modal', function () {
+                            $('.modal').on('shown.bs.modal', function () {
                     $('.modal,.modal-backdrop').addC lass('toPrint');
                     $('body').addClass('non-print');
                     });
-            // Remove classes
+// Remove classes
             $('.modal').on('hidden.bs.modal', function () {
                             $('.modal,.modal-backdrop').removeClass('toPrint');
                     $('body').removeClass('non-print');
                     });
-});
-})
-<!--End this part-->
+            });
+            })
+            <!--End this part-->
 
-<!--Download PDF-->
-var downloadPDF = function() {
+            <!--Download PDF-->
+            var downloadPDF = function() {
                             DocRaptor.createAndDownloadDoc("YOUR_API_KEY_HERE", {
-  test: true, // test documents are free, but watermarked
-                                        type: "pdf",
-                                        document_content: document.querySelector('html').innerHTML, // use this page's HTML
+                            test: true, // test documents are free, but watermarked
+       type:"pdf",
+                document_content: document.querySelector('html').innerHTML, // use this page's HTML
 // document_content: "<h1>Hello world!</h1>",               // or supply HTML directly
 // document_url: "http://example.com/your-page",            // or use a URL
 // javascript: true,                                        // enable JavaScript processing

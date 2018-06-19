@@ -91,7 +91,6 @@ class EmployeesController extends Controller {
                 $employeeSalary->employee_id = $request->employee_id;
                 $employeeSalary->salary_id = $salary['id'];
                 $employeeSalary->amount = $salary['amount'];
-//                $employeeSalary->taxable_amount = $this->getTaxableSalary($salary['id'], $salary['amount'], $basicSalaryAmount);
                 $employeeSalary->save();
             }
         }

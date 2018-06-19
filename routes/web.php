@@ -25,8 +25,8 @@ Route::group(['middleware' => 'not.authenticated.employee'], function() {
 });
 
 Route::group(['middleware' => 'authenticated.employee'], function() {
-    Route::get('/home', 'PayrollController@index');
-    Route::post('/home', 'PayrollController@show');
+    Route::get('/home', 'PayrollHomeController@show');
+    Route::post('/home', 'PayrollHomeController@show');
 
     Route::get('/change/username', 'EmployeeInfoController@showEditUsername');
     Route::post('/change/username', 'EmployeeInfoController@editUsername');
