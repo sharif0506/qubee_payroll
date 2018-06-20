@@ -14,14 +14,9 @@
 Route::group(['middleware' => 'not.authenticated.employee'], function() {
 
     Route::get('/', 'EmployeeAuthenticationController@showLogin');
-
     Route::get('/login', 'EmployeeAuthenticationController@showLogin');
-
     Route::post('/login', 'EmployeeAuthenticationController@login');
 
-    Route::get('/registration', 'EmployeeAuthenticationController@showRegistration');
-
-    Route::post('/registration', 'EmployeeAuthenticationController@registration');
 });
 
 Route::group(['middleware' => 'authenticated.employee'], function() {
@@ -68,6 +63,14 @@ Route::group(['middleware' => 'authenticated.admin'], function() {
     Route::get('/admin/salary/edit/{id}', 'SalariesController@showEdit')->where('id', '[0-9]+');
     Route::post('/admin/salary/edit/{id}', 'SalariesController@edit')->where('id', '[0-9]+');
     Route::get('/admin/salary/delete/{id}', 'SalariesController@delete')->where('id', '[0-9]+');
+
+
+    Route::get('/admin/deduction', 'DeductionsController@index');
+    Route::get('/admin/deduction/add', 'DeductionsController@showAdd');
+    Route::post('/admin/deduction/add', 'DeductionsController@add');
+    Route::get('/admin/deduction/edit/{id}', 'DeductionsController@showEdit')->where('id', '[0-9]+');
+    Route::post('/admin/deduction/edit/{id}', 'DeductionsController@edit')->where('id', '[0-9]+');
+    Route::get('/admin/deduction/delete/{id}', 'DeductionsController@delete')->where('id', '[0-9]+');
  
     
     Route::get('/admin/employee', 'EmployeesController@index');
@@ -79,8 +82,7 @@ Route::group(['middleware' => 'authenticated.admin'], function() {
     
     Route::get('/admin/payroll', 'PayrollsController@index');
     Route::post('/admin/payroll', 'PayrollsController@generatePayroll');
-   
-    
+       
     
 });
 

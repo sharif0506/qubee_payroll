@@ -21,7 +21,6 @@ class SalariesController extends Controller {
             "name" => "required|unique:salaries,name",
             "condition" => "required",
             "status" => "required",
-            "status" => "required",
             "salary_type" => "required",
         ]);
         $salary = new Salary();

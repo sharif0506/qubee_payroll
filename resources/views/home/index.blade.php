@@ -99,7 +99,7 @@
             <div class="modal-body">
                 @if(count($employeeIncomes)>0)
                 <h4 class="text-center">Augree Wireless Broadband Bangladesh Ltd.</h4>
-                <p class="text-center">Payslip</p>
+                <p class="text-center">Payslip, {{ $month }}</p>
                 <p class="text-center">Date</p>
                 <table class="table">
 
@@ -161,12 +161,19 @@
                         @endforeach-->
                         <tr>
                             <td class="text-right" > <strong> Net Deduction </strong> </td>
-                            <td > {{ "0" }} </td>
+                            <td > {{ $netMonthlyDeduction }} </td>
                         </tr>
 
                     </tbody>
 
                 </table>
+                
+                <strong>Net Payable: </strong> {{ $netMonthlyIncome - $netMonthlyDeduction }} BDT
+                
+                <br /><br />
+                
+                [Software generated Payslip - Signature is not required]
+
                 @else
                 <p> Payroll is not found </p>
                 @endif

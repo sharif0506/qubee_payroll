@@ -9,12 +9,12 @@ use Auth;
 
 class PayrollHomeController extends Controller {
 
-    public function index() {
-//        $currentMonth = date("F");
-//        $currentYear = date("Y");
-//        $id = Auth::guard('employees')->user()->employee_id;
-        return view('home.index');
-    }
+//    public function index() {
+////        $currentMonth = date("F");
+////        $currentYear = date("Y");
+////        $id = Auth::guard('employees')->user()->employee_id;
+//        return view('home.index');
+//    }
 
     public function show(Request $request) {
         $employeeInfo = Employee::findOrFail(Auth::guard('employees')->user()->id);
@@ -42,6 +42,7 @@ class PayrollHomeController extends Controller {
             'employeeIncomes' => $employeePayroll,
             'employeeInfo' => $employeeInfo,
             'netMonthlyIncome' => $netMonthlyIncome,
+            'netMonthlyDeduction' => 0,
             'month' => $month,
             'incomeYear' => $incomeYear
         ]);
