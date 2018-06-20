@@ -19,11 +19,17 @@ class PayrollsController extends Controller {
             'income_year' => 'required',
             'month' => 'required'
         ]);
-
-        $fileName = $request->additional_file;
-        $file = fopen($fileName, "r");
-        $fileContent = fgetcsv($file);
-        dd($fileContent);
+        $file = $request->file('additional_file');
+        if ($file->getClientOriginalExtension() != "csv") {
+            return redirect()->back()->withErrors("You must upload a csv formatted file");
+        }
+        $fileHandler = fopen($file->getRealPath(), "r");
+        $counter = 0;
+        while (!feof($fileHandler)) {
+            (fgetcsv($fileHandler));
+            $counter++;
+        }
+        fclose($file);
         $payroll = new Payroll();
         $payroll->month = $request->month;
         $payroll->income_year = $request->income_year;

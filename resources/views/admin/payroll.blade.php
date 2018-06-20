@@ -7,8 +7,8 @@
     <h2>Payroll Generate</h2>
     <hr />
 
-    <form method="post" action="{{url("/admin/payroll")}}">
-        
+    <form method="post" action="{{url("/admin/payroll")}}" enctype="multipart/form-data" >
+
         <div class="form-group">
             <div class="col-md-4" >
                 <label>Income Year:</label>
@@ -45,10 +45,13 @@
             {{ csrf_field() }} 
             <br /><br /><br /><br />
 
-            <div class="col-md-4" >
-                <button class="btn btn-success form-control" type="submit" name="generate_payroll" onclick="return confirm('Are you sure you want to generate payroll?');" > 
-                    Generate Payroll
-                </button>
+            <div class="row" >
+                <div class="col-md-4">
+                    <button class="btn btn-success form-control" type="submit" name="generate_payroll" onclick="return confirm('Are you sure you want to generate payroll?');" > 
+                        Generate Payroll
+                    </button>
+                </div>
+
             </div>
 
         </div>
@@ -58,6 +61,15 @@
     <div class="alert alert-success">
         <ul>
             <li>{{ session("message") }}</li>
+        </ul>
+    </div>
+    @endif
+    @if(count($errors))
+    <div class="alert alert-danger">
+        <ul>
+            @foreach($errors->all() as $error)
+            <li>{{ $error }}</li>
+            @endforeach
         </ul>
     </div>
     @endif
