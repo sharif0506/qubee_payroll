@@ -29,7 +29,19 @@
                     <ul class="nav navbar-nav navbar-right">
                         @if(Auth::check())
                         <li><a href="{{url('/admin/payroll') }}">Payroll Generate</a></li>                       
-                        <li><a href="#">Reports</a></li>                       
+                        
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                Financial Info
+                                <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a href="{{ url('/admin/salary') }}"> Salary Management </a></li>
+                                <li><a href="{{  url('/admin/deduction') }}"> Deduction Manage </a></li>
+                                <li><a href="#">Manage Income Tax</a> </li>
+                            </ul>
+                        </li>
+                       
                         <li><a href="{{url('/admin/employee') }}">Manage Employee</a></li>                       
                         <li class="dropdown">
                             <a class="dropdown-toggle" data-toggle="dropdown" href="#">

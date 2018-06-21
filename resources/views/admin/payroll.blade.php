@@ -10,7 +10,7 @@
     <form method="post" action="{{url("/admin/payroll")}}" enctype="multipart/form-data" >
 
         <div class="form-group">
-            <div class="col-md-4" >
+            <div class="col-md-3" >
                 <label>Income Year:</label>
                 <select class="form-control" name="income_year">
                     <option value="2018-2019">2018-2019</option>
@@ -19,7 +19,7 @@
                 </select>
             </div>
 
-            <div class="col-md-4" >
+            <div class="col-md-3" >
                 <label >Month:</label>
                 <select class="form-control" name="month">
                     <!--                    <option value=""></option>-->
@@ -38,15 +38,21 @@
                 </select>
             </div>
 
-            <div class="col-md-4" >
-                <label>Upload Addition Amount File:</label>
+            <div class="col-md-3" >
+                <label>Upload Additional Income File:</label>
                 <input type="file" class="form-control" name="additional_file" />
             </div>
+
+            <div class="col-md-3" >
+                <label>Upload Deduction File:</label>
+                <input type="file" class="form-control" name="deduction_file" />
+            </div>
+
             {{ csrf_field() }} 
             <br /><br /><br /><br />
 
             <div class="row" >
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <button class="btn btn-success form-control" type="submit" name="generate_payroll" onclick="return confirm('Are you sure you want to generate payroll?');" > 
                         Generate Payroll
                     </button>
