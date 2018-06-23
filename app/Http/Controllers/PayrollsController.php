@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\TaxSlab;
 use App\Salary;
 use App\Deduction;
 use App\Payroll;
@@ -166,6 +167,17 @@ class PayrollsController extends Controller {
         //check employee will get payroll full income year
         $totalTaxableIncome = $this->getTaxableSalaryOnMonthlyIncome($employeeID) +
                 $this->getTaxableSalaryOnAdditionalIncome($employeeID, $incomeYear);
+
+        $incomeTax = 0;
+        $taxSlabs = TaxSlab::all();
+        foreach ($taxSlabs as $taxSlab) {
+            $incomeSlab = abs($totalTaxableIncome - $taxSlab->amount);
+            $incomeTax = $incomeTax + ($incomeSlab * ($taxSlab->tax_rate) / 100);
+            if (($totalTaxableIncome - $taxSlab->amount) <= 0) {
+                break;
+            }
+            $totalTaxableIncome = $totalTaxableIncome - $taxSlab->amount;
+        }
     }
 
     private function getTaxableSalaryOnMonthlyIncome($employeeID) {
