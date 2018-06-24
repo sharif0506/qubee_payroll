@@ -153,12 +153,18 @@
                     </thead>
                     <tbody>
 
-<!--                        @foreach($employeeIncomes as $employeeIncome)
+                        @foreach($employeeMonthlyDeductions as $employeeDeduction)
                         <tr>
-                            <td> {{$employeeIncome->salary->name}} </td>
-                            <td> {{$employeeIncome->amount}} </td>
+                            <td> {{$employeeDeduction->deductionInfo->name}} </td>
+                            <td> {{$employeeDeduction->amount}} </td>
                         </tr>
-                        @endforeach-->
+                        @endforeach
+                        @if($employeeMonthlyTax > 0)
+                        <tr>
+                            <td> Monthly Income Tax </td>
+                            <td> {{$employeeMonthlyTax}} </td>
+                        </tr>
+                        @endif
                         <tr>
                             <td class="text-right" > <strong> Net Deduction </strong> </td>
                             <td > {{ $netMonthlyDeduction }} </td>
@@ -167,11 +173,11 @@
                     </tbody>
 
                 </table>
-                
+
                 <strong>Net Payable: </strong> {{ $netMonthlyIncome - $netMonthlyDeduction }} BDT
-                
+
                 <br /><br />
-                
+
                 [Software generated Payslip - Signature is not required]
 
                 @else
@@ -262,29 +268,29 @@
 
 <!--Javascript Code -->
 <script>
-<!--Print-->
-                    (function ($) {
-                    $(document).ready(function () {
+            <!--Print-->
+            (function ($) {
+                            $(document).ready(function () {
                     // Add Print Classes for Modal
-                            $('.modal').on('shown.bs.modal', function () {
+                    $('.modal').on('shown.bs.modal', function () {
                     $('.modal,.modal-backdrop').addC lass('toPrint');
-                    $('body').addClass('non-print');
-                    });
-// Remove classes
-            $('.modal').on('hidden.bs.modal', function () {
-                            $('.modal,.modal-backdrop').removeClass('toPrint');
-                    $('body').removeClass('non-print');
-                    });
+            $('body').addClass('non-print');
             });
-            })
+            // Remove classes
+                            $('.modal').on('hidden.bs.modal', function () {
+                    $('.modal,.modal-backdrop').removeClass('toPrint');
+            $('body').removeClass('non-print');
+            });
+            });
+                    })
             <!--End this part-->
 
-            <!--Download PDF-->
+<!--Download PDF-->
             var downloadPDF = function() {
                             DocRaptor.createAndDownloadDoc("YOUR_API_KEY_HERE", {
                             test: true, // test documents are free, but watermarked
-       type:"pdf",
-                document_content: document.querySelector('html').innerHTML, // use this page's HTML
+type:"pdf",
+    document_content: document.querySelector('html').innerHTML, // use this page's HTML
 // document_content: "<h1>Hello world!</h1>",               // or supply HTML directly
 // document_url: "http://example.com/your-page",            // or use a URL
 // javascript: true,                                        // enable JavaScript processing

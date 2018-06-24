@@ -4,21 +4,19 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTaxSlabsTable extends Migration
-{
+class CreateTaxRebateSlabsTable extends Migration {
+
     /**
      * Run the migrations.
      *
      * @return void
      */
-    public function up()
-    {
-        Schema::create('tax_slabs', function (Blueprint $table) {
+    public function up() {
+        Schema::create('tax_rebate_slabs', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('slab_order');            
+            $table->string('slab_order');
             $table->integer('amount');
-            $table->integer('tax_rate');
-            $table->string('condition');
+            $table->integer('rebate_rate');
             $table->timestamps();
         });
     }
@@ -28,8 +26,8 @@ class CreateTaxSlabsTable extends Migration
      *
      * @return void
      */
-    public function down()
-    {
-        Schema::dropIfExists('tax_slabs');
+    public function down() {
+        Schema::dropIfExists('tax_rebate_slabs');
     }
+
 }

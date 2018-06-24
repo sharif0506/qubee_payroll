@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\TaxSlab;
+use App\TaxRebateSlab;
 use App\Salary;
 use App\Deduction;
 use App\Payroll;
@@ -11,6 +12,7 @@ use App\Employee;
 use App\EmployeeSalary;
 use App\EmployeeMonthlyIncome;
 use App\EmployeeMonthlyDeduction;
+use App\EmployeeMonthlyTax;
 
 class PayrollsController extends Controller {
 
@@ -43,11 +45,12 @@ class PayrollsController extends Controller {
         $payroll = new Payroll();
         $payroll->month = $request->month;
         $payroll->income_year = $request->income_year;
+        $payroll->save();
         return redirect()->back()->with("message", "Payroll generated successfully");
     }
 
     private function monthlyIncomeProcess($employeee_id, $month, $incomeYear) {
-        //need to check fraction month
+//need to check fraction month
         $employeeSalaries = EmployeeSalary::where("employee_id", $employeee_id)->get();
         foreach ($employeeSalaries as $employeeSalary) {
             $monthlyIncome = new EmployeeMonthlyIncome();
@@ -81,11 +84,11 @@ class PayrollsController extends Controller {
             $salary = Salary::where('name', trim($header))
                     ->where('status', 'Active')
                     ->where('salary_type', 'Occasional')
-                    ->get();
-            if (count($salary) > 0) {
-                array_push($salaryIDList, $salary->id);
-            } else {
+                    ->first();
+            if ($salary == NULL) {
                 array_push($salaryIDList, 0);
+            } else {
+                array_push($salaryIDList, $salary->id);
             }
         }
         return $salaryIDList;
@@ -132,11 +135,11 @@ class PayrollsController extends Controller {
         foreach ($csvHeader as $header) {
             $deduction = Deduction::where('name', trim($header))
                     ->where('status', 'Active')
-                    ->get();
-            if (count($deduction) > 0) {
-                array_push($deductionIDList, $deduction->id);
-            } else {
+                    ->first();
+            if ($deduction == NULL) {
                 array_push($deductionIDList, 0);
+            } else {
+                array_push($deductionIDList, $deduction->id);
             }
         }
         return $deductionIDList;
@@ -163,30 +166,65 @@ class PayrollsController extends Controller {
         }
     }
 
-    private function monthlyTaxProcess($employeeID, $incomeYear) {
+    private function monthlyTaxProcess($employeeID, $month, $incomeYear) {
         //check employee will get payroll full income year
         $totalTaxableIncome = $this->getTaxableSalaryOnMonthlyIncome($employeeID) +
                 $this->getTaxableSalaryOnAdditionalIncome($employeeID, $incomeYear);
 
+        $taxableIncome = $totalTaxableIncome;
         $incomeTax = 0;
         $taxSlabs = TaxSlab::all();
         foreach ($taxSlabs as $taxSlab) {
-            $incomeSlab = abs($totalTaxableIncome - $taxSlab->amount);
+            $incomeSlab = abs($taxableIncome - $taxSlab->amount);
             $incomeTax = $incomeTax + ($incomeSlab * ($taxSlab->tax_rate) / 100);
-            if (($totalTaxableIncome - $taxSlab->amount) <= 0) {
+            if (($taxableIncome - $taxSlab->amount) <= 0) {
                 break;
             }
-            $totalTaxableIncome = $totalTaxableIncome - $taxSlab->amount;
+            $taxableIncome = $taxableIncome - $taxSlab->amount;
         }
+        $totalInvestmentLimit = ceil($totalTaxableIncome * 0.25);
+        if ($totalInvestmentLimit >= 15000000) {
+            $totalInvestmentLimit = 15000000;
+        }
+        $investmentLimit = $totalInvestmentLimit;
+        $totalTaxRebate = 0;
+        $taxRebateSlabs = TaxRebateSlab::all();
+        foreach ($taxRebateSlabs as $taxRebateSlab) {
+            $rebateSlab = abs($investmentLimit - $taxRebateSlab->amount);
+            $totalTaxRebate = $totalTaxRebate + ( $rebateSlab * ($taxRebateSlab->rebate_rate / 100) );
+            if (($investmentLimit - $taxRebateSlab->amount) <= 0) {
+                break;
+            }
+            $investmentLimit = $investmentLimit - $taxRebateSlab->amount;
+        }
+        $finalIncomeTax = $incomeTax - $totalTaxRebate;
+        if ($incomeTax > 0 && $finalIncomeTax < 5000) {
+            $finalIncomeTax = 5000;
+        } elseif ($incomeTax == 0) {
+            $finalIncomeTax = 0;
+        }
+        $this->monthlyIncomeTaxProcess($employeeID, ceil($finalIncomeTax / 12), $month, $incomeYear);
+    }
+
+    private function monthlyIncomeTaxProcess($employeeID, $monthlyTaxAmount, $month, $incomeYear) {
+        $employeeMonthlyTax = new EmployeeMonthlyTax();
+        $employeeMonthlyTax->employee_id = $employeeID;
+        $employeeMonthlyTax->amount = $monthlyTaxAmount;
+        $employeeMonthlyTax->month = $month;
+        $employeeMonthlyTax->income_year = $incomeYear;
+        $employeeMonthlyTax->save();
     }
 
     private function getTaxableSalaryOnMonthlyIncome($employeeID) {
+
         $employeeSalaries = EmployeeSalary::where('employee_id', $employeeID)->get();
         $totalTaxableIncome = 0;
+
         $basicSalaryAmount = $this->getBasicSalary($employeeID);
+
         foreach ($employeeSalaries as $employeeSalary) {
             $totalTaxableIncome = $totalTaxableIncome +
-                    $this->getTaxableSalary($employeeSalary->salary_id, $basicSalaryAmount);
+                    $this->getTaxableSalary($employeeSalary->salary_id, $employeeSalary->amount, $basicSalaryAmount);
         }
         return $totalTaxableIncome;
     }
@@ -231,17 +269,19 @@ class PayrollsController extends Controller {
     }
 
     private function getBasicSalary($employeeID) {
+
         $basicSalaryAmount = 0;
         $salary = Salary::where('name', 'Basic')
                 ->where('status', 'Active')
-                ->get();
-        if ($salary->isEmpty()) {
+                ->first();
+        if ($salary == NULL) {
             return $basicSalaryAmount;
         }
         $employeeSalary = EmployeeSalary::where('employee_id', $employeeID)
                 ->where('salary_id', $salary->id)
-                ->get();
-        if ($employeeSalary->isEmpty()) {
+                ->first();
+
+        if ($employeeSalary == NULL) {
             return $basicSalaryAmount;
         }
         return $employeeSalary->amount;
