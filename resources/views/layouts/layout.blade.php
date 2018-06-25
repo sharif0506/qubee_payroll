@@ -49,7 +49,7 @@
             <div class="col-md-3">
                 <br />
                 <div class="list-group">
-                    <h4 class="list-group-item text-center">Md. Sharifur Rahman</h4>
+                    <h4 class="list-group-item text-center"> {{ $employeeInfo->details->first_name }} {{ $employeeInfo->details->last_name }}</h4>
                     <!--<h4 class="list-group-item">Sharif</h4>-->
                     <a href="{{ url('/home') }}" class="list-group-item"> <i class="glyphicon glyphicon-home"> </i>  Home </a>
                     <a href="{{ url('/change/username') }}" class="list-group-item"><i class="glyphicon glyphicon-user"> </i> Change User Name </a>

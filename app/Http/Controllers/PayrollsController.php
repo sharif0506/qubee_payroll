@@ -50,7 +50,7 @@ class PayrollsController extends Controller {
     }
 
     private function monthlyIncomeProcess($employeee_id, $month, $incomeYear) {
-//need to check fraction month
+    //need to check fraction month
         $employeeSalaries = EmployeeSalary::where("employee_id", $employeee_id)->get();
         foreach ($employeeSalaries as $employeeSalary) {
             $monthlyIncome = new EmployeeMonthlyIncome();

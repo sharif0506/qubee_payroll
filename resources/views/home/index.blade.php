@@ -58,22 +58,46 @@
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
             <div class="modal-header">
-                <h1>Augree Wireless Broadband Bangladesh Ltd.</h1>
-                <br>
-                <p><center><strong>Personal Detail</strong></center></p>
+                <h4>Augree Wireless Broadband Bangladesh Ltd.</h4>                
             </div>
             <div class="modal-body">
-                <p>Employee Id: <span id="phone"></span></p>
-                <p>Employee Name: <span id="phone"></span></p>
-                <p>Designation: <span id="phone"></span></p>
-                <p>Department: <span id="phone"></span></p>
-                <p>Category: <span id="phone"></span></p>
-                <p>Grade: <span id="phone"></span></p>
-                <p>Step: <span id="phone"></span></p>
-                <p>Band: <span id="phone"></span></p>
-                <p>Level: <span id="phone"></span></p>
-                <p>Birth Date: <span id="phone"></span></p>
-                <p>Father's Name: <span id="phone"></span></p>
+
+                <p><center><strong>Personal Detail</strong></center></p>
+                <table class="table" >
+                    <tr>
+                        <td>Employee Id</td> <td> : {{ $employeeInfo->employee_id }}</td>                        
+                    </tr>
+                    <tr>
+                        <td>Employee Name</td> <td> : {{ $employeeInfo->details->first_name }} {{ $employeeInfo->details->last_name }}</td>                        
+                    </tr>
+                    <tr>
+                        <td>Designation</td> <td> : {{ $employeeInfo->details->designation }}</td>                        
+                    </tr>
+                    <tr>
+                        <td>Department</td> <td> : {{ $employeeInfo->details->department->name }}</td>                        
+                    </tr>
+                    <tr>
+                        <td>Sub Department</td> <td> : {{ $employeeInfo->details->subDepartment->name }}</td>                        
+                    </tr>
+                    <tr>
+                        <td>Category</td> <td> : {{ $employeeInfo->details->category }}</td>                        
+                    </tr>
+                    <tr>
+                        <td>Grade</td> <td> : {{ $employeeInfo->details->grade }} </td>                        
+                    </tr>
+                    <tr>
+                        <td>Step</td> <td> : {{ $employeeInfo->details->step }}  </td>                        
+                    </tr>
+                    <tr>
+                        <td>Band</td> <td> : {{ $employeeInfo->details->band }}  </td>                        
+                    </tr>
+                    <tr>
+                        <td>Level</td> <td> : {{ $employeeInfo->details->level }}   </td>                        
+                    </tr>
+                    <tr>
+                        <td>Date of Birth</td> <td> : {{ $employeeInfo->details->date_of_birth }}   </td>                        
+                    </tr>
+                </table>
             </div>
             <div class="modal-footer">
 
@@ -93,8 +117,9 @@
         <!-- Modal content-->
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <!--                <h4 class="modal-title">Augree Wireless Broadband Bangladesh Ltd.</h4>-->
+                <button id="pdf-button" type="button" class="btn btn-default" onclick="downloadPDF()">Save as PDF</button>
+                <button type="button" class="btn btn-default print" onClick="window.print(); return false">Print</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
             <div class="modal-body">
                 @if(count($employeeIncomes)>0)
@@ -178,7 +203,9 @@
 
                 <br /><br />
 
-                [Software generated Payslip - Signature is not required]
+                <p class="text-center">
+                    [Software generated Payslip - Signature is not required]
+                </p>
 
                 @else
                 <p> Payroll is not found </p>
@@ -204,10 +231,58 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Modal Header 2</h4>
+                <h4 class="modal-title">Investment Notification Letter</h4>
             </div>
             <div class="modal-body">
-                <p>Some text in the modal.</p>
+                <p class="text-justify">
+                    {{ $employeeInfo->details->first_name }} {{ $employeeInfo->details->last_name }}
+                    <br />
+                    {{ $employeeInfo->details->designation}} - {{ $employeeInfo->details->subDepartment->name}}
+                    <br />
+                    Augere Wireless Broadband Bangladesh Ltd.
+                    <br /><br />
+
+                    Subject: Investment in approved securities for the purpose of income tax rebate for the income year: {{ $incomeYear }} 
+                    <br /><br />
+                    Dear  {{ $employeeInfo->details->first_name }} {{ $employeeInfo->details->last_name }},
+                    <br /><br />
+                    You are aware that every employee is required to invest in approved securities/instruments each year for income tax rebate .
+                    As per your present salary and benefits, you are required to invest at least an amount of Tk
+                    {{ 0 }} during the {{ $incomeYear }}  but not later than 30th June 2018 to get maximum tax rebate.
+                    Since you are a member of Govt. recognized PF Trust, contribution to PF Trust Tk. 00.00 (both contribution till June 2018)
+                    can be shown as eligible investment to claim tax rebate. So you may plan to invest remaining balance
+                    Tk.{{ 0 }} for further investment to eligible investment mode as guided in the following para.
+                    <br /><br />
+                    Please, note that your estimated tax burden has been calculated considering maximum tax rebate assuming that you will invest the required amount in approved securities/instruments during the income year {{ $incomeYear }}.
+                    If you do not or partially invest , you will get no rebate or partial rebate, as the case may be, and accordingly your tax burden/tax deduction will be increased. For your convenience we provide below list of eligible 
+                    investments for availing the Tax Rebate:
+                    <br /><br />
+                </p>
+                <table class="table table-bordered">
+                    <tr><td> I)Life insurance premium paid by an individual </td></tr>
+                    <tr><td> II)Contribution to Benevolent Fund and Group Insurance Scheme </td></tr>
+                    <tr><td> III)Contribution to Govt. recognized provident fund and other funds </td></tr>
+                    <tr><td> IV)Investment in stocks and Shares of listed companies </td></tr>
+                    <tr><td> V)Investment in Debentures or Debenture -Stocks </td></tr>
+                    <tr><td> VI)Investment in Unit Certificate ,Govt. securities (Shanchay Patra) etc. </td></tr>
+                    <tr><td> VII)Govt. approved Deposit Pension Scheme(DPS) not exceeding Taka 60,000 </td></tr>
+                    <tr><td> VIII)Donation to a charitable Hospita </td></tr>
+                    <tr><td> IX)Donation to organization for the welfare of the retarded people </td></tr>
+                    <tr><td> X)Donation to Zakat Fund </td></tr>
+                    <tr><td> XI)Donation to Ahsania Cancer Hospital </td></tr>
+                    <tr><td> XII)Donation to Govt. Approved Educational Institution </td></tr>
+                    <tr><td> XIII)Any sum invested in the purchase of one computer or one laptop by an Individual 
+                            assess subject to maximum Taka 100,000 for laptop and Taka 50,000 for desktop.
+                        </td></tr>
+                </table>
+                <br />
+                <p class="text-justify">
+                    Thanking you. <br />
+                    Authorized Payroll Service Provider of <br />
+                    Augere Wireless Broadband Bangladesh Ltd. 
+                </p>
+                <br />
+                <p class="text-center">[Software generated letter-Signature is not required]</p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -229,7 +304,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Modal Header 3</h4>
+                <h4 class="modal-title">Income Tax Computation</h4>
             </div>
             <div class="modal-body">
                 <p>Some text in the modal.</p>
@@ -268,21 +343,21 @@
 
 <!--Javascript Code -->
 <script>
-            <!--Print-->
+<!--Print-->
             (function ($) {
                             $(document).ready(function () {
                     // Add Print Classes for Modal
                     $('.modal').on('shown.bs.modal', function () {
                     $('.modal,.modal-backdrop').addC lass('toPrint');
-            $('body').addClass('non-print');
+                    $('body').addClass('non-print');
             });
             // Remove classes
                             $('.modal').on('hidden.bs.modal', function () {
                     $('.modal,.modal-backdrop').removeClass('toPrint');
-            $('body').removeClass('non-print');
+                    $('body').removeClass('non-print');
             });
             });
-                    })
+            })
             <!--End this part-->
 
 <!--Download PDF-->

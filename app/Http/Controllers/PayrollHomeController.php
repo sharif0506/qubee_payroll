@@ -56,7 +56,8 @@ class PayrollHomeController extends Controller {
             'netMonthlyIncome' => $netMonthlyIncome,
             'netMonthlyDeduction' => $employeeDeductionSum + $employeeMonthlyTax->amount,
             'month' => $month,
-            'incomeYear' => $incomeYear
+            'incomeYear' => $incomeYear,
+            'investmentAmount' => 0
         ]);
     }
 
