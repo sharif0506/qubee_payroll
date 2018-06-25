@@ -13,6 +13,7 @@ use App\EmployeeSalary;
 use App\EmployeeMonthlyIncome;
 use App\EmployeeMonthlyDeduction;
 use App\EmployeeMonthlyTax;
+use App\EmployeeInvestment;
 
 class PayrollsController extends Controller {
 
@@ -50,7 +51,7 @@ class PayrollsController extends Controller {
     }
 
     private function monthlyIncomeProcess($employeee_id, $month, $incomeYear) {
-    //need to check fraction month
+        //need to check fraction month
         $employeeSalaries = EmployeeSalary::where("employee_id", $employeee_id)->get();
         foreach ($employeeSalaries as $employeeSalary) {
             $monthlyIncome = new EmployeeMonthlyIncome();
@@ -186,6 +187,8 @@ class PayrollsController extends Controller {
         if ($totalInvestmentLimit >= 15000000) {
             $totalInvestmentLimit = 15000000;
         }
+        EmployeeInvestment::updateOrCreate(
+                ['employee_id' => $employeeID, 'income_year' => $incomeYear], ['amount' => $totalInvestmentLimit]);
         $investmentLimit = $totalInvestmentLimit;
         $totalTaxRebate = 0;
         $taxRebateSlabs = TaxRebateSlab::all();

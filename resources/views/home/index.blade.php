@@ -234,6 +234,7 @@
                 <h4 class="modal-title">Investment Notification Letter</h4>
             </div>
             <div class="modal-body">
+                @if($employeeInvestment != NULL)
                 <p class="text-justify">
                     {{ $employeeInfo->details->first_name }} {{ $employeeInfo->details->last_name }}
                     <br />
@@ -248,10 +249,10 @@
                     <br /><br />
                     You are aware that every employee is required to invest in approved securities/instruments each year for income tax rebate .
                     As per your present salary and benefits, you are required to invest at least an amount of Tk
-                    {{ 0 }} during the {{ $incomeYear }}  but not later than 30th June 2018 to get maximum tax rebate.
+                    {{ $employeeInvestment->amount }} during the {{ $incomeYear }}  but not later than 30th June 2018 to get maximum tax rebate.
                     Since you are a member of Govt. recognized PF Trust, contribution to PF Trust Tk. 00.00 (both contribution till June 2018)
                     can be shown as eligible investment to claim tax rebate. So you may plan to invest remaining balance
-                    Tk.{{ 0 }} for further investment to eligible investment mode as guided in the following para.
+                    Tk.{{ $employeeInvestment->amount }} for further investment to eligible investment mode as guided in the following para.
                     <br /><br />
                     Please, note that your estimated tax burden has been calculated considering maximum tax rebate assuming that you will invest the required amount in approved securities/instruments during the income year {{ $incomeYear }}.
                     If you do not or partially invest , you will get no rebate or partial rebate, as the case may be, and accordingly your tax burden/tax deduction will be increased. For your convenience we provide below list of eligible 
@@ -259,19 +260,19 @@
                     <br /><br />
                 </p>
                 <table class="table table-bordered">
-                    <tr><td> I)Life insurance premium paid by an individual </td></tr>
-                    <tr><td> II)Contribution to Benevolent Fund and Group Insurance Scheme </td></tr>
-                    <tr><td> III)Contribution to Govt. recognized provident fund and other funds </td></tr>
-                    <tr><td> IV)Investment in stocks and Shares of listed companies </td></tr>
-                    <tr><td> V)Investment in Debentures or Debenture -Stocks </td></tr>
-                    <tr><td> VI)Investment in Unit Certificate ,Govt. securities (Shanchay Patra) etc. </td></tr>
-                    <tr><td> VII)Govt. approved Deposit Pension Scheme(DPS) not exceeding Taka 60,000 </td></tr>
-                    <tr><td> VIII)Donation to a charitable Hospita </td></tr>
-                    <tr><td> IX)Donation to organization for the welfare of the retarded people </td></tr>
-                    <tr><td> X)Donation to Zakat Fund </td></tr>
-                    <tr><td> XI)Donation to Ahsania Cancer Hospital </td></tr>
-                    <tr><td> XII)Donation to Govt. Approved Educational Institution </td></tr>
-                    <tr><td> XIII)Any sum invested in the purchase of one computer or one laptop by an Individual 
+                    <tr><td> I) Life insurance premium paid by an individual </td></tr>
+                    <tr><td> II) Contribution to Benevolent Fund and Group Insurance Scheme </td></tr>
+                    <tr><td> III) Contribution to Govt. recognized provident fund and other funds </td></tr>
+                    <tr><td> IV) Investment in stocks and Shares of listed companies </td></tr>
+                    <tr><td> V) Investment in Debentures or Debenture -Stocks </td></tr>
+                    <tr><td> VI) Investment in Unit Certificate ,Govt. securities (Shanchay Patra) etc. </td></tr>
+                    <tr><td> VII) Govt. approved Deposit Pension Scheme(DPS) not exceeding Taka 60,000 </td></tr>
+                    <tr><td> VIII) Donation to a charitable Hospita </td></tr>
+                    <tr><td> IX) Donation to organization for the welfare of the retarded people </td></tr>
+                    <tr><td> X) Donation to Zakat Fund </td></tr>
+                    <tr><td> XI) Donation to Ahsania Cancer Hospital </td></tr>
+                    <tr><td> XII) Donation to Govt. Approved Educational Institution </td></tr>
+                    <tr><td> XIII) Any sum invested in the purchase of one computer or one laptop by an Individual 
                             assess subject to maximum Taka 100,000 for laptop and Taka 50,000 for desktop.
                         </td></tr>
                 </table>
@@ -283,6 +284,9 @@
                 </p>
                 <br />
                 <p class="text-center">[Software generated letter-Signature is not required]</p>
+                @else
+                    No Investment Letter
+                @endif
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

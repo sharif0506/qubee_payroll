@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\EmployeeMonthlyIncome;
+use App\EmployeeInvestment;
 use App\EmployeeMonthlyDeduction;
 use App\EmployeeMonthlyTax;
 use App\Employee;
@@ -48,6 +49,10 @@ class PayrollHomeController extends Controller {
                 ->where('income_year', $incomeYear)
                 ->first();
         
+        $employeeInvestment = EmployeeInvestment::where('employee_id', $employeeInfo->employee_id)
+                ->where('income_year', $incomeYear)
+                ->first();
+        
         return view('home.index', [
             'employeeIncomes' => $employeePayroll,
             'employeeInfo' => $employeeInfo,
@@ -57,7 +62,7 @@ class PayrollHomeController extends Controller {
             'netMonthlyDeduction' => $employeeDeductionSum + $employeeMonthlyTax->amount,
             'month' => $month,
             'incomeYear' => $incomeYear,
-            'investmentAmount' => 0
+            'employeeInvestment' => $employeeInvestment            
         ]);
     }
 

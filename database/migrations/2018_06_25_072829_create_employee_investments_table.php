@@ -12,7 +12,7 @@ class CreateEmployeeInvestmentsTable extends Migration {
      * @return void
      */
     public function up() {
-        Schema::create('employee_investments_table', function (Blueprint $table) {
+        Schema::create('employee_investments', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('employee_id');
             $table->integer('amount');
@@ -27,7 +27,7 @@ class CreateEmployeeInvestmentsTable extends Migration {
      * @return void
      */
     public function down() {
-        Schema::dropIfExists('employee_investments_table');
+        Schema::dropIfExists('employee_investments');
     }
 
 }
