@@ -72,11 +72,11 @@
     <br /> <br />
     <footer class="container-fluid text-center navbar-fixed-bottom" style="background-color: lightsteelblue;">
         <div style="margin-top:10px;">
-            <h4>
+            <h5>
                 Qubee © {{date("Y")}}, All Rights Reserved 
                 <br />
                 Powered By - IT & Billing
-            </h4>
+            </h5>
         </div>
     </footer>    
 

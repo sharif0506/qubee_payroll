@@ -8,6 +8,8 @@ use App\EmployeeInvestment;
 use App\EmployeeMonthlyDeduction;
 use App\EmployeeMonthlyTax;
 use App\Employee;
+use App\Payroll;
+use App\ProvidentFund;
 use Auth;
 
 class PayrollHomeController extends Controller {
@@ -28,41 +30,51 @@ class PayrollHomeController extends Controller {
                 ->where('month', $month)
                 ->where('income_year', $incomeYear)
                 ->get();
-             
+
         $netMonthlyIncome = EmployeeMonthlyIncome::where('employee_id', $employeeInfo->employee_id)
                 ->where('month', $month)
                 ->where('income_year', $incomeYear)
                 ->sum('amount');
-           
+
         $employeeMonthlyDeductions = EmployeeMonthlyDeduction::where('employee_id', $employeeInfo->employee_id)
                 ->where('month', $month)
                 ->where('income_year', $incomeYear)
                 ->get();
-        
+
         $employeeDeductionSum = EmployeeMonthlyDeduction::where('employee_id', $employeeInfo->employee_id)
                 ->where('month', $month)
                 ->where('income_year', $incomeYear)
                 ->sum('amount');
-        
+
         $employeeMonthlyTax = EmployeeMonthlyTax::where('employee_id', $employeeInfo->employee_id)
                 ->where('month', $month)
                 ->where('income_year', $incomeYear)
                 ->first();
-        
+
         $employeeInvestment = EmployeeInvestment::where('employee_id', $employeeInfo->employee_id)
                 ->where('income_year', $incomeYear)
                 ->first();
-        
+
+        $payroll = Payroll::where('income_year', $incomeYear)
+                ->where('month', $month)
+                ->first();
+
+        $totalContribution = (ProvidentFund::where('income_year', $incomeYear)
+                        ->sum('employee_contribution')) + (ProvidentFund::where('income_year', $incomeYear)
+                        ->sum('company_contribution'));
+
         return view('home.index', [
             'employeeIncomes' => $employeePayroll,
             'employeeInfo' => $employeeInfo,
             'employeeMonthlyDeductions' => $employeeMonthlyDeductions,
-            'employeeMonthlyTax' => $employeeMonthlyTax->amount,
+            'employeeMonthlyTax' => $employeeMonthlyTax,
             'netMonthlyIncome' => $netMonthlyIncome,
-            'netMonthlyDeduction' => $employeeDeductionSum + $employeeMonthlyTax->amount,
+            'netMonthlyDeduction' => $employeeDeductionSum,
             'month' => $month,
             'incomeYear' => $incomeYear,
-            'employeeInvestment' => $employeeInvestment            
+            'payroll' => $payroll,
+            'employeeInvestment' => $employeeInvestment,
+            'totalContribution' => $totalContribution
         ]);
     }
 

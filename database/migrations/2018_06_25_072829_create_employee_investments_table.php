@@ -14,7 +14,7 @@ class CreateEmployeeInvestmentsTable extends Migration {
     public function up() {
         Schema::create('employee_investments', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('employee_id');
+            $table->string('employee_id');
             $table->integer('amount');
             $table->string('income_year');
             $table->timestamps();

@@ -125,7 +125,7 @@
                 @if(count($employeeIncomes)>0)
                 <h4 class="text-center">Augree Wireless Broadband Bangladesh Ltd.</h4>
                 <p class="text-center">Payslip, {{ $month }}</p>
-                <p class="text-center">Date</p>
+                <p class="text-center">Date : {{ substr($payroll->created_at,0,-8) }}</p>
                 <table class="table">
 
                     <tr>
@@ -184,22 +184,22 @@
                             <td> {{$employeeDeduction->amount}} </td>
                         </tr>
                         @endforeach
-                        @if($employeeMonthlyTax > 0)
+                        @if($employeeMonthlyTax->amount > 0)
                         <tr>
                             <td> Monthly Income Tax </td>
-                            <td> {{$employeeMonthlyTax}} </td>
+                            <td> {{$employeeMonthlyTax->amount}} </td>
                         </tr>
                         @endif
                         <tr>
                             <td class="text-right" > <strong> Net Deduction </strong> </td>
-                            <td > {{ $netMonthlyDeduction }} </td>
+                            <td > {{ $netMonthlyDeduction + $employeeMonthlyTax->amount }} </td>
                         </tr>
 
                     </tbody>
 
                 </table>
 
-                <strong>Net Payable: </strong> {{ $netMonthlyIncome - $netMonthlyDeduction }} BDT
+                <strong>Net Payable: </strong> {{ $netMonthlyIncome - ($netMonthlyDeduction + $employeeMonthlyTax->amount) }} BDT
 
                 <br /><br />
 
@@ -249,10 +249,12 @@
                     <br /><br />
                     You are aware that every employee is required to invest in approved securities/instruments each year for income tax rebate .
                     As per your present salary and benefits, you are required to invest at least an amount of Tk
-                    {{ $employeeInvestment->amount }} during the {{ $incomeYear }}  but not later than 30th June 2018 to get maximum tax rebate.
-                    Since you are a member of Govt. recognized PF Trust, contribution to PF Trust Tk. 00.00 (both contribution till June 2018)
+                    {{ $employeeInvestment->amount }} during the {{ $incomeYear }}  but not later than 30th June {{ substr($incomeYear,5)}} to get maximum tax rebate.
+                    Since you are a member of Govt. recognized PF Trust, contribution to PF Trust Tk. {{ $totalContribution }} (both contribution till June {{ substr($incomeYear,5)}})
                     can be shown as eligible investment to claim tax rebate. So you may plan to invest remaining balance
-                    Tk.{{ $employeeInvestment->amount }} for further investment to eligible investment mode as guided in the following para.
+                    Tk. <strong> {{ $employeeInvestment->amount - $totalContribution }} </strong>
+                    ( TK. {{ $employeeInvestment->amount }} - TK. {{ $totalContribution }} )
+                    for further investment to eligible investment mode as guided in the following para.
                     <br /><br />
                     Please, note that your estimated tax burden has been calculated considering maximum tax rebate assuming that you will invest the required amount in approved securities/instruments during the income year {{ $incomeYear }}.
                     If you do not or partially invest , you will get no rebate or partial rebate, as the case may be, and accordingly your tax burden/tax deduction will be increased. For your convenience we provide below list of eligible 
@@ -285,7 +287,7 @@
                 <br />
                 <p class="text-center">[Software generated letter-Signature is not required]</p>
                 @else
-                    No Investment Letter
+                No Investment Letter
                 @endif
             </div>
             <div class="modal-footer">

@@ -14,6 +14,7 @@ use App\EmployeeMonthlyIncome;
 use App\EmployeeMonthlyDeduction;
 use App\EmployeeMonthlyTax;
 use App\EmployeeInvestment;
+use App\ProvidentFund;
 
 class PayrollsController extends Controller {
 
@@ -47,20 +48,25 @@ class PayrollsController extends Controller {
         $payroll->month = $request->month;
         $payroll->income_year = $request->income_year;
         $payroll->save();
+        dd("Test");
         return redirect()->back()->with("message", "Payroll generated successfully");
     }
 
-    private function monthlyIncomeProcess($employeee_id, $month, $incomeYear) {
+    private function monthlyIncomeProcess($employeeID, $month, $incomeYear) {
         //need to check fraction month
-        $employeeSalaries = EmployeeSalary::where("employee_id", $employeee_id)->get();
+        $employeeSalaries = EmployeeSalary::where("employee_id", $employeeID)->get();
         foreach ($employeeSalaries as $employeeSalary) {
             $monthlyIncome = new EmployeeMonthlyIncome();
-            $monthlyIncome->employee_id = $employeee_id;
+            $monthlyIncome->employee_id = $employeeID;
             $monthlyIncome->salary_id = $employeeSalary->salary_id;
             $monthlyIncome->amount = $employeeSalary->amount;
             $monthlyIncome->month = $month;
             $monthlyIncome->income_year = $incomeYear;
             $monthlyIncome->save();
+
+            if ($employeeSalary->salary->name == "Providend Fund-Employeer's Contribution") {
+                $this->saveProvidentFundData($employeeID, 0, $employeeSalary->amount, $month, $incomeYear);
+            }
         }
     }
 
@@ -157,13 +163,16 @@ class PayrollsController extends Controller {
             if ($deductionID == 0 || $amount == 0) {
                 continue;
             }
-            $employeeMonthlySalary = new EmployeeMonthlyDeduction();
-            $employeeMonthlySalary->employee_id = $employeeID;
-            $employeeMonthlySalary->deduction_id = $deductionID;
-            $employeeMonthlySalary->amount = $amount;
-            $employeeMonthlySalary->month = $month;
-            $employeeMonthlySalary->income_year = $incomeYear;
-            $employeeMonthlySalary->save();
+            $employeeMonthlyDeduction = new EmployeeMonthlyDeduction();
+            $employeeMonthlyDeduction->employee_id = $employeeID;
+            $employeeMonthlyDeduction->deduction_id = $deductionID;
+            $employeeMonthlyDeduction->amount = $amount;
+            $employeeMonthlyDeduction->month = $month;
+            $employeeMonthlyDeduction->income_year = $incomeYear;
+            $employeeMonthlyDeduction->save();
+            if ($employeeMonthlyDeduction->deductionInfo()->name == "PF Deduction") {
+                $this->saveProvidentFundData($employeeID, $employeeMonthlyDeduction->amount, 0, $month, $incomeYear);
+            }
         }
     }
 
@@ -172,6 +181,7 @@ class PayrollsController extends Controller {
         $totalTaxableIncome = $this->getTaxableSalaryOnMonthlyIncome($employeeID) +
                 $this->getTaxableSalaryOnAdditionalIncome($employeeID, $incomeYear);
 
+         echo "total taxable income: $totalTaxableIncome <br />";
         $taxableIncome = $totalTaxableIncome;
         $incomeTax = 0;
         $taxSlabs = TaxSlab::all();
@@ -183,10 +193,14 @@ class PayrollsController extends Controller {
             }
             $taxableIncome = $taxableIncome - $taxSlab->amount;
         }
+        echo "income tax: $incomeTax <br />";
+        
         $totalInvestmentLimit = ceil($totalTaxableIncome * 0.25);
         if ($totalInvestmentLimit >= 15000000) {
             $totalInvestmentLimit = 15000000;
         }
+        
+                echo "employee investment: $totalInvestmentLimit <br />";
         EmployeeInvestment::updateOrCreate(
                 ['employee_id' => $employeeID, 'income_year' => $incomeYear], ['amount' => $totalInvestmentLimit]);
         $investmentLimit = $totalInvestmentLimit;
@@ -200,12 +214,15 @@ class PayrollsController extends Controller {
             }
             $investmentLimit = $investmentLimit - $taxRebateSlab->amount;
         }
+        echo "Tax rebate: $totalTaxRebate <br />";
         $finalIncomeTax = $incomeTax - $totalTaxRebate;
         if ($incomeTax > 0 && $finalIncomeTax < 5000) {
             $finalIncomeTax = 5000;
         } elseif ($incomeTax == 0) {
             $finalIncomeTax = 0;
         }
+        echo "final income tax: $finalIncomeTax <br />";
+        echo "============================================<br />";
         $this->monthlyIncomeTaxProcess($employeeID, ceil($finalIncomeTax / 12), $month, $incomeYear);
     }
 
@@ -229,6 +246,7 @@ class PayrollsController extends Controller {
             $totalTaxableIncome = $totalTaxableIncome +
                     $this->getTaxableSalary($employeeSalary->salary_id, $employeeSalary->amount, $basicSalaryAmount);
         }
+        
         return $totalTaxableIncome;
     }
 
@@ -288,6 +306,16 @@ class PayrollsController extends Controller {
             return $basicSalaryAmount;
         }
         return $employeeSalary->amount;
+    }
+
+    private function saveProvidentFundData($employeeID, $employeeContribution, $companyContribution, $month, $incomeYear) {
+        $providentFund = new ProvidentFund();
+        $providentFund->employee_id = $employeeID;
+        $providentFund->month = $month;
+        $providentFund->income_year = $incomeYear;
+        $providentFund->employee_contribution = $employeeContribution;
+        $providentFund->company_contribution = $companyContribution;
+        $providentFund->save();
     }
 
 }

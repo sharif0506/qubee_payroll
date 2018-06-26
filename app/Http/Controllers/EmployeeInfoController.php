@@ -10,7 +10,8 @@ use App\Employee;
 class EmployeeInfoController extends Controller {
 
     public function showEditUsername() {
-        return view("home.editusername");
+        $employeeInfo = Employee::findOrFail(Auth::guard('employees')->user()->id);
+        return view("home.editusername", ['employeeInfo' => $employeeInfo]);
     }
 
     public function editUsername(Request $request) {
@@ -27,7 +28,8 @@ class EmployeeInfoController extends Controller {
     }
 
     public function showEditMobileNo() {
-        return view("home.editmobile");
+        $employeeInfo = Employee::findOrFail(Auth::guard('employees')->user()->id);
+        return view("home.editmobile", ['employeeInfo' => $employeeInfo]);
     }
 
     public function editMobileNo(Request $request) {
@@ -45,7 +47,8 @@ class EmployeeInfoController extends Controller {
     }
 
     public function showChangePassword() {
-        return view("home.editpassword");
+        $employeeInfo = Employee::findOrFail(Auth::guard('employees')->user()->id);
+        return view("home.editpassword", ['employeeInfo' => $employeeInfo]);
     }
 
     public function changePassword(Request $request) {
