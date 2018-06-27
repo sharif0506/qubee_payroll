@@ -7,6 +7,7 @@ use App\EmployeeMonthlyIncome;
 use App\EmployeeInvestment;
 use App\EmployeeMonthlyDeduction;
 use App\EmployeeMonthlyTax;
+use App\EmployeeYearlyTax;
 use App\Employee;
 use App\Payroll;
 use App\ProvidentFund;
@@ -63,6 +64,19 @@ class PayrollHomeController extends Controller {
                         ->sum('employee_contribution')) + (ProvidentFund::where('income_year', $incomeYear)
                         ->sum('company_contribution'));
 
+        $employeeYearlyTaxes = EmployeeYearlyTax::where('employee_id', $employeeInfo->employee_id)
+                ->where('income_year', $incomeYear)
+                ->get();
+
+        $employeeYearlyTaxes = EmployeeYearlyTax::where('employee_id', $employeeInfo->employee_id)
+                ->where('income_year', $incomeYear)
+                ->get();
+
+        $netTaxableIncome = EmployeeYearlyTax::where('employee_id', $employeeInfo->employee_id)
+                ->where('income_year', $incomeYear)
+                ->sum('taxable_amount');
+
+
         return view('home.index', [
             'employeeIncomes' => $employeePayroll,
             'employeeInfo' => $employeeInfo,
@@ -74,7 +88,9 @@ class PayrollHomeController extends Controller {
             'incomeYear' => $incomeYear,
             'payroll' => $payroll,
             'employeeInvestment' => $employeeInvestment,
-            'totalContribution' => $totalContribution
+            'totalContribution' => $totalContribution,
+            'employeeYearlyTaxes' => $employeeYearlyTaxes,
+            'netTaxableIncome' => $netTaxableIncome
         ]);
     }
 

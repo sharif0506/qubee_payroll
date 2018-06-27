@@ -13,6 +13,7 @@ use App\EmployeeSalary;
 use App\EmployeeMonthlyIncome;
 use App\EmployeeMonthlyDeduction;
 use App\EmployeeMonthlyTax;
+use App\EmployeeYearlyTax;
 use App\EmployeeInvestment;
 use App\ProvidentFund;
 
@@ -48,7 +49,7 @@ class PayrollsController extends Controller {
         $payroll->month = $request->month;
         $payroll->income_year = $request->income_year;
         $payroll->save();
-        dd("Test");
+//        dd("Test");
         return redirect()->back()->with("message", "Payroll generated successfully");
     }
 
@@ -178,51 +179,52 @@ class PayrollsController extends Controller {
 
     private function monthlyTaxProcess($employeeID, $month, $incomeYear) {
         //check employee will get payroll full income year
-        $totalTaxableIncome = $this->getTaxableSalaryOnMonthlyIncome($employeeID) +
+        $totalTaxableIncome = $this->getTaxableSalaryOnMonthlyIncome($employeeID, $incomeYear) +
                 $this->getTaxableSalaryOnAdditionalIncome($employeeID, $incomeYear);
 
-         echo "total taxable income: $totalTaxableIncome <br />";
         $taxableIncome = $totalTaxableIncome;
         $incomeTax = 0;
         $taxSlabs = TaxSlab::all();
         foreach ($taxSlabs as $taxSlab) {
-            $incomeSlab = abs($taxableIncome - $taxSlab->amount);
-            $incomeTax = $incomeTax + ($incomeSlab * ($taxSlab->tax_rate) / 100);
-            if (($taxableIncome - $taxSlab->amount) <= 0) {
+            if (($taxableIncome - $taxSlab->amount ) > 0) {
+                $incomeSlab = $taxableIncome - $taxSlab->amount;
+                $incomeTax = $incomeTax + ($incomeSlab * (($taxSlab->tax_rate) / 100));
+            } else {
+                $incomeSlab = $taxableIncome;
+                $incomeTax = $incomeTax + ($incomeSlab * (($taxSlab->tax_rate) / 100));
                 break;
             }
             $taxableIncome = $taxableIncome - $taxSlab->amount;
         }
-        echo "income tax: $incomeTax <br />";
-        
+
         $totalInvestmentLimit = ceil($totalTaxableIncome * 0.25);
         if ($totalInvestmentLimit >= 15000000) {
             $totalInvestmentLimit = 15000000;
         }
-        
-                echo "employee investment: $totalInvestmentLimit <br />";
+
         EmployeeInvestment::updateOrCreate(
                 ['employee_id' => $employeeID, 'income_year' => $incomeYear], ['amount' => $totalInvestmentLimit]);
         $investmentLimit = $totalInvestmentLimit;
         $totalTaxRebate = 0;
         $taxRebateSlabs = TaxRebateSlab::all();
         foreach ($taxRebateSlabs as $taxRebateSlab) {
-            $rebateSlab = abs($investmentLimit - $taxRebateSlab->amount);
-            $totalTaxRebate = $totalTaxRebate + ( $rebateSlab * ($taxRebateSlab->rebate_rate / 100) );
-            if (($investmentLimit - $taxRebateSlab->amount) <= 0) {
+            if (($investmentLimit - $taxRebateSlab->amount) > 0) {
+                $rebateSlab = $investmentLimit - $taxRebateSlab->amount;
+                $totalTaxRebate = $totalTaxRebate + ( $rebateSlab * ($taxRebateSlab->rebate_rate / 100) );
+            } else {
+                $rebateSlab = $investmentLimit;
+                $totalTaxRebate = $totalTaxRebate + ( $rebateSlab * ($taxRebateSlab->rebate_rate / 100) );
                 break;
             }
             $investmentLimit = $investmentLimit - $taxRebateSlab->amount;
         }
-        echo "Tax rebate: $totalTaxRebate <br />";
+//        echo "Tax rebate: $totalTaxRebate <br />";
         $finalIncomeTax = $incomeTax - $totalTaxRebate;
         if ($incomeTax > 0 && $finalIncomeTax < 5000) {
             $finalIncomeTax = 5000;
         } elseif ($incomeTax == 0) {
             $finalIncomeTax = 0;
         }
-        echo "final income tax: $finalIncomeTax <br />";
-        echo "============================================<br />";
         $this->monthlyIncomeTaxProcess($employeeID, ceil($finalIncomeTax / 12), $month, $incomeYear);
     }
 
@@ -235,7 +237,7 @@ class PayrollsController extends Controller {
         $employeeMonthlyTax->save();
     }
 
-    private function getTaxableSalaryOnMonthlyIncome($employeeID) {
+    private function getTaxableSalaryOnMonthlyIncome($employeeID, $incomeYear) {
 
         $employeeSalaries = EmployeeSalary::where('employee_id', $employeeID)->get();
         $totalTaxableIncome = 0;
@@ -245,8 +247,12 @@ class PayrollsController extends Controller {
         foreach ($employeeSalaries as $employeeSalary) {
             $totalTaxableIncome = $totalTaxableIncome +
                     $this->getTaxableSalary($employeeSalary->salary_id, $employeeSalary->amount, $basicSalaryAmount);
+
+            $this->saveEmployeeYearlyIncomeTax(
+                    $employeeID, $employeeSalary->salary_id, $employeeSalary->amount * 12, $this->getTaxableSalary($employeeSalary->salary_id, $employeeSalary->amount, $basicSalaryAmount), $incomeYear
+            );
         }
-        
+
         return $totalTaxableIncome;
     }
 
@@ -269,19 +275,47 @@ class PayrollsController extends Controller {
                 }
             }
         }
+        $this->setYearlyTaxOnAdditionalIncome($employeeID, $incomeYear);
+        return $totalTaxableIncome;
+    }
+
+    private function setYearlyTaxOnAdditionalIncome($employeeID, $incomeYear) {
+        $employeeMonthlyIncomes = EmployeeMonthlyIncome::where('employee_id', $employeeID)
+                ->where('income_year', $incomeYear)
+                ->get();
+
+        if ($employeeMonthlyIncomes->isEmpty()) {
+            return;
+        }
+        $additionalSalaries = Salary::where('status', 'Active')
+                ->where('salary_type', 'Occasional')
+                ->get();
+
+        foreach ($additionalSalaries as $additionalSalary) {
+            $totalTaxableIncome = 0;
+            foreach ($employeeMonthlyIncomes as $employeeMonthlyIncome) {
+                if ($additionalSalary->id == $employeeMonthlyIncome->salary_id) {
+                    $totalTaxableIncome = $totalTaxableIncome + $employeeMonthlyIncome->amount;
+                }
+            }
+            $this->saveEmployeeYearlyIncomeTax($employeeID, $additionalSalary->id, $totalTaxableIncome, $totalTaxableIncome, $incomeYear);
+        }
         return $totalTaxableIncome;
     }
 
     private function getTaxableSalary($salaryID, $salaryAmount, $basicSalaryAmount) {
         $taxableSalary = 0;
+        $taxExemptedAmount = 0;
         $salary = Salary::findOrFail($salaryID);
         if ($salary->condition == 100) {
             $taxableSalary = $salaryAmount * 12;  //taxable salary for 12 month
         } else if ($salary->condition == "Lowest") {
-            $tax_limit1 = ($salary->tax_limit1 !== NULL) ? ($basicSalaryAmount * (($salary->tax_limit1) / 100) * 12) : 0;
+            $tax_limit1 = ($salary->tax_limit1 !== NULL) ? (($basicSalaryAmount * (($salary->tax_limit1) / 100)) * 12) : 0;
             $tax_limit2 = ($salary->tax_limit2 !== NULL) ? $salary->tax_limit2 : 0;
             $tax_limit3 = ($salary->tax_limit3 !== NULL) ? $salary->tax_limit3 : 0;
-            $taxExemptedAmount = min(array_filter(array($tax_limit1, $tax_limit2, $tax_limit3)));
+            $remove = array(0);
+            $taxArray = array_diff(array($tax_limit1, $tax_limit2, $tax_limit3), $remove);
+            $taxExemptedAmount = min($taxArray);
             if (($salaryAmount * 12) > $taxExemptedAmount) {
                 $taxableSalary = ($salaryAmount * 12) - $taxExemptedAmount;
             }
@@ -316,6 +350,35 @@ class PayrollsController extends Controller {
         $providentFund->employee_contribution = $employeeContribution;
         $providentFund->company_contribution = $companyContribution;
         $providentFund->save();
+    }
+
+    private function saveEmployeeYearlyIncomeTax($employeeID, $salaryID, $salaryAmount, $taxableAmount, $incomeYear) {
+        if ($salaryAmount == 0) {
+            return;
+        }
+
+        $employeeTax = EmployeeYearlyTax::where('employee_id', $employeeID)
+                ->where('salary_id', $salaryID)
+                ->where('income_year', $incomeYear)
+                ->first();
+        if ($employeeTax != NULL) {
+            if ($employeeTax->salary_amount == $salaryAmount && $employeeTax->taxable_amount == $taxableAmount) {
+                return;
+            }
+            $employeeTax->salary_amount = $salaryAmount;
+            $employeeTax->taxable_amount = $taxableAmount;
+            $employeeTax->tax_exempted_amount = $salaryAmount - $taxableAmount;
+            $employeeTax->save();
+            return;
+        }
+        $employeeTax = new EmployeeYearlyTax();
+        $employeeTax->employee_id = $employeeID;
+        $employeeTax->salary_id = $salaryID;
+        $employeeTax->salary_amount = $salaryAmount;
+        $employeeTax->taxable_amount = $taxableAmount;
+        $employeeTax->tax_exempted_amount = $salaryAmount - $taxableAmount;
+        $employeeTax->income_year = $incomeYear;
+        $employeeTax->save();
     }
 
 }

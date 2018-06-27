@@ -310,40 +310,63 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Income Tax Computation</h4>
+                <h4 class="modal-title text-center">Income Tax Computation</h4>                
             </div>
             <div class="modal-body">
-                <p>Some text in the modal.</p>
+                @if(count($employeeYearlyTaxes) > 0)
+                <p class="text-center">Income Year : {{$incomeYear}}</p>
+                <table class="table">
+                    <tr>
+                        <td> <label> Employee Name: </label> {{ $employeeInfo->details->first_name }} {{ $employeeInfo->details->last_name }}</td>
+                        <td> <label> Employee Code: </label> {{ $employeeInfo->employee_id }}</td>                        
+                    </tr>
+                    <tr>
+                        <td> <label> Designation: </label> {{ $employeeInfo->details->designation }} </td>
+                        <td> <label> Joining Date: </label> {{ $employeeInfo->details->date_of_join }} </td>
+                    </tr>
+                    <tr>
+                        <td> <label> Sub Department: </label> {{ $employeeInfo->details->subDepartment->name }} </td>
+                        <td> <label> TIN: </label> {{ $employeeInfo->details->tin }} </td>
+                    </tr>
+                </table>
+                <p>
+                    Salary Wise Tax Breakdown
+                </p>
+                <table class="table table-striped table-bordered">
+                    <tr>
+                        <th>Salary Component</th>
+                        <th>Salary Income BDT</th>
+                        <th>Allowable Exemption BDT</th>
+                        <th>Add. for noncash Benifit</th>
+                        <th>Taxable Income BDT</th>
+                    </tr>
+                    @foreach($employeeYearlyTaxes as $employeeYearlyTax)
+                    <tr>
+                        <td> {{$employeeYearlyTax->salary->name}} </td>
+                        <td> {{$employeeYearlyTax->salary_amount}} </td>
+                        <td> {{$employeeYearlyTax->tax_exempted_amount}} </td>
+                        <td> 0 </td>
+                        <td> {{$employeeYearlyTax->taxable_amount}} </td>
+                    </tr>
+                    @endforeach
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td><strong> Net </strong></td>
+                        <td><strong>{{ $netTaxableIncome }}</strong></td>
+                    </tr>
+                </table>
+                <strong class="text-left"> Total Taxable Income BDT : {{ $netTaxableIncome }}  </strong>  
+
+                @else
+                <p> No Income Tax Computation Data was found. </p>
+                @endif
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
         </div>
-
-    </div>
-</div>
-<!--button5-->
-<!--<button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#myModal5">Tax Computation for the month of April</button>-->
-<br>
-
-<!-- Modal -->
-<div class="modal fade5" id="myModal5" role="dialog">
-    <div class="modal-dialog">
-
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Modal Header 4</h4>
-            </div>
-            <div class="modal-body">
-                <p>Some text in the modal.</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            </div>
-        </div>
-
     </div>
 </div>
 
@@ -358,15 +381,15 @@
                     $('body').addClass('non-print');
             });
             // Remove classes
-                            $('.modal').on('hidden.bs.modal', function () {
-                    $('.modal,.modal-backdrop').removeClass('toPrint');
+            $('.modal').on('hidden.bs.modal', function () {
+                            $('.modal,.modal-backdrop').removeClass('toPrint');
                     $('body').removeClass('non-print');
             });
             });
             })
-            <!--End this part-->
-
-<!--Download PDF-->
+<!--End this part-->
+            
+            <!--Download PDF-->
             var downloadPDF = function() {
                             DocRaptor.createAndDownloadDoc("YOUR_API_KEY_HERE", {
                             test: true, // test documents are free, but watermarked
