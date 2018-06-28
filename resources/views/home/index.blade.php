@@ -357,10 +357,21 @@
                         <td><strong>{{ $netTaxableIncome }}</strong></td>
                     </tr>
                 </table>
-                <strong class="text-left"> Total Taxable Income BDT : {{ $netTaxableIncome }}  </strong>  
-
+                <p>
+                    <strong class="text-left"> Total Taxable Income BDT : {{ $netTaxableIncome }}  </strong>  
+                </p>
+                <p>
+                    Calculation of Tax Liability :
+                </p>
+                <table class="table table-bordered table-striped">
+                    <tr>
+                        <th> Taxable Income </th>
+                        <th> Tax Slab </th>
+                        <th> Calculated Tax BDT </th>
+                    </tr>
+                </table>
                 @else
-                <p> No Income Tax Computation Data was found. </p>
+                    <p> No Income Tax Computation Data was found. </p>
                 @endif
             </div>
             <div class="modal-footer">

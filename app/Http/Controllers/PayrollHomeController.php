@@ -11,6 +11,7 @@ use App\EmployeeYearlyTax;
 use App\Employee;
 use App\Payroll;
 use App\ProvidentFund;
+use App\TaxSlab;
 use Auth;
 
 class PayrollHomeController extends Controller {
@@ -68,14 +69,11 @@ class PayrollHomeController extends Controller {
                 ->where('income_year', $incomeYear)
                 ->get();
 
-        $employeeYearlyTaxes = EmployeeYearlyTax::where('employee_id', $employeeInfo->employee_id)
-                ->where('income_year', $incomeYear)
-                ->get();
-
         $netTaxableIncome = EmployeeYearlyTax::where('employee_id', $employeeInfo->employee_id)
                 ->where('income_year', $incomeYear)
                 ->sum('taxable_amount');
 
+        $employeeTaxData = $this->getEmployeeTaxData($employeeData, $netTaxableIncome);
 
         return view('home.index', [
             'employeeIncomes' => $employeePayroll,
@@ -92,6 +90,18 @@ class PayrollHomeController extends Controller {
             'employeeYearlyTaxes' => $employeeYearlyTaxes,
             'netTaxableIncome' => $netTaxableIncome
         ]);
+    }
+
+    private function getEmployeeTaxData($employeeData, $totalTaxableIncome) {
+        $taxSlabs = TaxSlab::all(); //select all tax slab where condition is gender
+        $taxData = array();
+        foreach ($taxSlabs as $taxSlab) {
+            array_push($taxData, [
+                "slab_order" => $taxSlab->slab_order,
+                "amount" => $taxSlab->amount,
+                "tax_rate" => $taxSlab->tax_rate
+            ]);
+        }
     }
 
 }
