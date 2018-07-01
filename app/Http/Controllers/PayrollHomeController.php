@@ -12,6 +12,7 @@ use App\Employee;
 use App\Payroll;
 use App\ProvidentFund;
 use App\TaxSlab;
+use App\EmployeeYearlyTotalTax;
 use Auth;
 
 class PayrollHomeController extends Controller {
@@ -73,8 +74,12 @@ class PayrollHomeController extends Controller {
                 ->where('income_year', $incomeYear)
                 ->sum('taxable_amount');
 
-        $employeeTaxData = $this->getEmployeeTaxData($employeeInfo, $netTaxableIncome);       
-        
+        $employeeTaxData = $this->getEmployeeTaxData($employeeInfo, $netTaxableIncome);
+
+        $netEmployeeYearlyTax = EmployeeYearlyTotalTax::where('employee_id', $employeeInfo->employee_id)
+                ->where('income_year', $incomeYear)
+                ->first();
+
         return view('home.index', [
             'employeeIncomes' => $employeePayroll,
             'employeeInfo' => $employeeInfo,
@@ -89,7 +94,8 @@ class PayrollHomeController extends Controller {
             'totalContribution' => $totalContribution,
             'employeeYearlyTaxes' => $employeeYearlyTaxes,
             'netTaxableIncome' => $netTaxableIncome,
-            'employeeYearlyTaxeData' => $employeeTaxData
+            'employeeYearlyTaxData' => $employeeTaxData,
+            'employeeYearlyTotalTax' => $netEmployeeYearlyTax
         ]);
     }
 

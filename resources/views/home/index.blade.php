@@ -181,18 +181,18 @@
                         @foreach($employeeMonthlyDeductions as $employeeDeduction)
                         <tr>
                             <td> {{$employeeDeduction->deductionInfo->name}} </td>
-                            <td> {{$employeeDeduction->amount}} </td>
+                            <td class="text-center"> {{$employeeDeduction->amount}} </td>
                         </tr>
                         @endforeach
                         @if($employeeMonthlyTax->amount > 0)
                         <tr>
                             <td> Monthly Income Tax </td>
-                            <td> {{$employeeMonthlyTax->amount}} </td>
+                            <td class="text-center"> {{$employeeMonthlyTax->amount}} </td>
                         </tr>
                         @endif
                         <tr>
                             <td class="text-right" > <strong> Net Deduction </strong> </td>
-                            <td > {{ $netMonthlyDeduction + $employeeMonthlyTax->amount }} </td>
+                            <td class="text-center" > {{ $netMonthlyDeduction + $employeeMonthlyTax->amount }} </td>
                         </tr>
 
                     </tbody>
@@ -269,7 +269,7 @@
                     <tr><td> V) Investment in Debentures or Debenture -Stocks </td></tr>
                     <tr><td> VI) Investment in Unit Certificate ,Govt. securities (Shanchay Patra) etc. </td></tr>
                     <tr><td> VII) Govt. approved Deposit Pension Scheme(DPS) not exceeding Taka 60,000 </td></tr>
-                    <tr><td> VIII) Donation to a charitable Hospita </td></tr>
+                    <tr><td> VIII) Donation to a charitable Hospital </td></tr>
                     <tr><td> IX) Donation to organization for the welfare of the retarded people </td></tr>
                     <tr><td> X) Donation to Zakat Fund </td></tr>
                     <tr><td> XI) Donation to Ahsania Cancer Hospital </td></tr>
@@ -369,20 +369,69 @@
                         <th class="text-center"> Taxable Income </th>
                         <th class="text-center"> Calculated Tax BDT </th>
                     </tr>
-                    @foreach($employeeYearlyTaxeData as $employeeYearlyTax)
+                    @foreach($employeeYearlyTaxData as $employeeYearlyTax)
                     <tr>
                         <td class="text-center"> TK. {{ $employeeYearlyTax['amount'] }} @ {{ $employeeYearlyTax['tax_rate'] }}% </td>
                         <td class="text-center"> {{ $employeeYearlyTax['taxable_income'] }} </td>
                         <td class="text-center"> {{ $employeeYearlyTax['calculated_tax'] }} </td>
                     </tr>
                     @endforeach
+                    <tr>
+                        <td class="text-center"> <strong>  Total </strong> </td>
+                        <td class="text-center"> <strong> {{ $netTaxableIncome }} </strong></td>
+                        <td class="text-center"> <strong> {{ $employeeYearlyTotalTax->income_tax_amount }} </strong> </td>
+                    </tr>
                 </table>
+                <strong>Calculation of Tax Credit on Allowable Investment:</strong>
+                <div class="col-md-12">
+                    <div class="col-md-10">
+                        <p> 
+                            (a) Investment allowance limit is 25% of taxable income subject 
+                            to maximum of BDT 15000000
+                        </p>
+                    </div>
+                    <div class="col-md-2">
+                        <p> 
+                            {{$employeeInvestment->amount}}
+                        </p>
+                    </div>
+                    <div class="col-md-10">
+                        <p>
+                            (b)  Actual Investment
+                        </p>
+                    </div>
+                    <div class="col-md-2">
+                        <p> 
+                            {{$employeeInvestment->amount}}
+                        </p>
+                    </div>
+                    <div class="col-md-10">
+                        <p>
+                            (c) Calculate tax credit on actual investment
+                        </p>
+                    </div>
+                    <div class="col-md-2">
+                        <p> 
+                            ({{$employeeYearlyTotalTax->income_tax_rebate}})
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="col-md-10">
+                        <strong>Net Tax Payable:</strong>
+                    </div>
+                    <div class="col-md-2">
+                        <strong> {{$employeeYearlyTotalTax->final_tax_amount}} </strong>
+                    </div>
+                </div>
+                <br /><br /><br /><br />
+                <br /><br /><br /><br />
                 @else
                 <p> No Income Tax Computation Data was found. </p>
                 @endif
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal"> Close </button>
             </div>
         </div>
     </div>
@@ -390,23 +439,23 @@
 
 <!--Javascript Code -->
 <script>
-<!--Print-->
-                    (function ($) {
-                    $(document).ready(function () {
+        <!--Print-->
+        (function ($) {
+                            $(document).ready(function () {
 // Add Print Classes for Modal
                     $('.modal').on('shown.bs.modal', function () {
-                            $( '.modal,.m odal-backdrop').addC lass('toPrint');
-                            $('body').addClass('non-print');
-                    });
-                            // Remove classes                     $('.modal').on('hidden.bs.modal', function () {
+                    $('.modal,.m odal-backdrop').addC lass('toPrint');
+                    $('body').addClass('non-print');
+            });
+            // Remove classes                     $('.modal').on('hidden.bs.modal', function () {
                             $('.modal,.modal-backdrop').removeClass('toPrint');
-                            $('body').removeClass('non-print');
-                    });
-                            });
-                    })
-                            < !--End this part-- >
-                            < !--Download PDF-- >
-                            var downloadPDF = function() {
+                    $('body').removeClass('non-print');
+            });
+            });
+            })
+            < !--End this part-- >
+            < !--Download PDF-- >
+            var downloadPDF = function() {
                             DocRaptor.createAndDownloadDoc("YOUR_API_KEY_HERE", {
                             test: true, // test documents are free, but watermarked
                                     type:"pdf",

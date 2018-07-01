@@ -16,6 +16,7 @@ use App\EmployeeMonthlyTax;
 use App\EmployeeYearlyTax;
 use App\EmployeeInvestment;
 use App\ProvidentFund;
+use App\EmployeeYearlyTotalTax;
 
 class PayrollsController extends Controller {
 
@@ -202,8 +203,6 @@ class PayrollsController extends Controller {
             $totalInvestmentLimit = 15000000;
         }
 
-        EmployeeInvestment::updateOrCreate(
-                ['employee_id' => $employeeID, 'income_year' => $incomeYear], ['amount' => $totalInvestmentLimit]);
         $investmentLimit = $totalInvestmentLimit;
         $totalTaxRebate = 0;
         $taxRebateSlabs = TaxRebateSlab::all();
@@ -218,13 +217,22 @@ class PayrollsController extends Controller {
             }
             $investmentLimit = $investmentLimit - $taxRebateSlab->amount;
         }
-//        echo "Tax rebate: $totalTaxRebate <br />";
+        EmployeeInvestment::updateOrCreate(
+                ['employee_id' => $employeeID, 'income_year' => $incomeYear], ['amount' => $totalInvestmentLimit]);
         $finalIncomeTax = $incomeTax - $totalTaxRebate;
         if ($incomeTax > 0 && $finalIncomeTax < 5000) {
             $finalIncomeTax = 5000;
         } elseif ($incomeTax == 0) {
             $finalIncomeTax = 0;
         }
+        EmployeeYearlyTotalTax::updateOrCreate([
+            'employee_id' => $employeeID, 'income_year' => $incomeYear
+            ], 
+            ['income_tax_amount' => $incomeTax,
+            'income_tax_rebate' => $totalTaxRebate,
+            'final_tax_amount' => $finalIncomeTax
+            ]
+        );
         $this->monthlyIncomeTaxProcess($employeeID, ceil($finalIncomeTax / 12), $month, $incomeYear);
     }
 
