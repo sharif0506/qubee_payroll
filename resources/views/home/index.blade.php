@@ -332,29 +332,29 @@
                 <p>
                     Salary Wise Tax Breakdown
                 </p>
-                <table class="table table-striped table-bordered">
+                <table class="table table-striped table-bordered table-condensed">
                     <tr>
-                        <th>Salary Component</th>
-                        <th>Salary Income BDT</th>
-                        <th>Allowable Exemption BDT</th>
-                        <th>Add. for noncash Benifit</th>
-                        <th>Taxable Income BDT</th>
+                        <th class="text-center" >Salary Component</th>
+                        <th class="text-center">Salary Income BDT</th>
+                        <th class="text-center">Allowable Exemption BDT</th>
+                        <th class="text-center">Add. for noncash Benifit</th>
+                        <th class="text-center">Taxable Income BDT</th>
                     </tr>
                     @foreach($employeeYearlyTaxes as $employeeYearlyTax)
                     <tr>
-                        <td> {{$employeeYearlyTax->salary->name}} </td>
-                        <td> {{$employeeYearlyTax->salary_amount}} </td>
-                        <td> {{$employeeYearlyTax->tax_exempted_amount}} </td>
-                        <td> 0 </td>
-                        <td> {{$employeeYearlyTax->taxable_amount}} </td>
+                        <td class="text-center"> {{$employeeYearlyTax->salary->name}} </td>
+                        <td class="text-center"> {{$employeeYearlyTax->salary_amount}} </td>
+                        <td class="text-center"> {{$employeeYearlyTax->tax_exempted_amount}} </td>
+                        <td class="text-center"> 0 </td>
+                        <td class="text-center"> {{$employeeYearlyTax->taxable_amount}} </td>
                     </tr>
                     @endforeach
                     <tr>
                         <td></td>
                         <td></td>
                         <td></td>
-                        <td><strong> Net </strong></td>
-                        <td><strong>{{ $netTaxableIncome }}</strong></td>
+                        <td class="text-center"><strong>Net Income</strong></td>
+                        <td class="text-center"><strong>{{ $netTaxableIncome }}</strong></td>
                     </tr>
                 </table>
                 <p>
@@ -363,15 +363,22 @@
                 <p>
                     Calculation of Tax Liability :
                 </p>
-                <table class="table table-bordered table-striped">
+                <table class="table table-bordered table-striped table-condensed">
                     <tr>
-                        <th> Taxable Income </th>
-                        <th> Tax Slab </th>
-                        <th> Calculated Tax BDT </th>
+                        <th class="text-center"> Tax Slab </th>
+                        <th class="text-center"> Taxable Income </th>
+                        <th class="text-center"> Calculated Tax BDT </th>
                     </tr>
+                    @foreach($employeeYearlyTaxeData as $employeeYearlyTax)
+                    <tr>
+                        <td class="text-center"> TK. {{ $employeeYearlyTax['amount'] }} @ {{ $employeeYearlyTax['tax_rate'] }}% </td>
+                        <td class="text-center"> {{ $employeeYearlyTax['taxable_income'] }} </td>
+                        <td class="text-center"> {{ $employeeYearlyTax['calculated_tax'] }} </td>
+                    </tr>
+                    @endforeach
                 </table>
                 @else
-                    <p> No Income Tax Computation Data was found. </p>
+                <p> No Income Tax Computation Data was found. </p>
                 @endif
             </div>
             <div class="modal-footer">
@@ -384,28 +391,26 @@
 <!--Javascript Code -->
 <script>
 <!--Print-->
-            (function ($) {
-                            $(document).ready(function () {
-                    // Add Print Classes for Modal
+                    (function ($) {
+                    $(document).ready(function () {
+// Add Print Classes for Modal
                     $('.modal').on('shown.bs.modal', function () {
-                    $('.modal,.modal-backdrop').addC lass('toPrint');
-                    $('body').addClass('non-print');
-            });
-            // Remove classes
-            $('.modal').on('hidden.bs.modal', function () {
+                            $( '.modal,.m odal-backdrop').addC lass('toPrint');
+                            $('body').addClass('non-print');
+                    });
+                            // Remove classes                     $('.modal').on('hidden.bs.modal', function () {
                             $('.modal,.modal-backdrop').removeClass('toPrint');
-                    $('body').removeClass('non-print');
-            });
-            });
-            })
-<!--End this part-->
-            
-            <!--Download PDF-->
-            var downloadPDF = function() {
+                            $('body').removeClass('non-print');
+                    });
+                            });
+                    })
+                            < !--End this part-- >
+                            < !--Download PDF-- >
+                            var downloadPDF = function() {
                             DocRaptor.createAndDownloadDoc("YOUR_API_KEY_HERE", {
                             test: true, // test documents are free, but watermarked
-type:"pdf",
-    document_content: document.querySelector('html').innerHTML, // use this page's HTML
+                                    type:"pdf",
+                                    document_content: document.querySelector('html').innerHTML, // use this page's HTML
 // document_content: "<h1>Hello world!</h1>",               // or supply HTML directly
 // document_url: "http://example.com/your-page",            // or use a URL
 // javascript: true,                                        // enable JavaScript processing
