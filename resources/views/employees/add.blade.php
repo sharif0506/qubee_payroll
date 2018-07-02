@@ -33,7 +33,14 @@
 
                     <label> Band:</label>
                     <input class="form-control input-sm" placeholder="Enter Band" name="band" type="text" value="{{ old('band') }}" autocomplete="off" spellcheck="false" />
-
+                    
+                    <label> Tax Rule: </label>
+                    <select class="form-control input-sm"  name="tax_rule" required >                    
+                        <option value="Male" > Male </option>
+                        <option value="Female" > Female </option>
+                        <option value="Aged" > Aged </option>
+                        <option value="Disabled" > Disabled </option>
+                    </select>
                 </div>
 
                 <div class="col-md-3">

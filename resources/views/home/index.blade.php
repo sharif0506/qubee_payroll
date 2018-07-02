@@ -332,12 +332,12 @@
                 <p>
                     Salary Wise Tax Breakdown
                 </p>
-                <table class="table table-striped table-bordered table-condensed">
+                <table class="table table-striped table-bordered table-condensed table-responsive">
                     <tr>
                         <th class="text-center" >Salary Component</th>
                         <th class="text-center">Salary Income BDT</th>
                         <th class="text-center">Allowable Exemption BDT</th>
-                        <th class="text-center">Add. for noncash Benifit</th>
+<!--                        <th class="text-center">Add. for noncash Benifit</th>-->
                         <th class="text-center">Taxable Income BDT</th>
                     </tr>
                     @foreach($employeeYearlyTaxes as $employeeYearlyTax)
@@ -345,14 +345,14 @@
                         <td class="text-center"> {{$employeeYearlyTax->salary->name}} </td>
                         <td class="text-center"> {{$employeeYearlyTax->salary_amount}} </td>
                         <td class="text-center"> {{$employeeYearlyTax->tax_exempted_amount}} </td>
-                        <td class="text-center"> 0 </td>
+<!--                        <td class="text-center"> 0 </td>-->
                         <td class="text-center"> {{$employeeYearlyTax->taxable_amount}} </td>
                     </tr>
                     @endforeach
                     <tr>
                         <td></td>
                         <td></td>
-                        <td></td>
+                        <!--<td></td>-->
                         <td class="text-center"><strong>Net Income</strong></td>
                         <td class="text-center"><strong>{{ $netTaxableIncome }}</strong></td>
                     </tr>

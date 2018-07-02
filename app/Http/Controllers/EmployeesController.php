@@ -49,7 +49,8 @@ class EmployeesController extends Controller {
             'designation' => 'required|max:50',
             'date_of_birth' => 'required|date',
             'date_of_join' => 'required|date',
-            'salaries' => 'required|array'
+            'salaries' => 'required|array',
+            'tax_rule' => 'required'
         ]);
 
         $employee = new Employee();
@@ -79,7 +80,7 @@ class EmployeesController extends Controller {
         $employeeDetails->tin = $request->tin;
         $employeeDetails->level = $request->level;
         $employeeDetails->address = $request->address;
-
+        $employeeDetails->tax_rule = $request->tax_rule;
         $employeeDetails->save();
 
         $basicSalaryAmount = $this->getBasicSalary($request->salaries);

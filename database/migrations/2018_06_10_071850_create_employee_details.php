@@ -30,6 +30,7 @@ class CreateEmployeeDetails extends Migration {
             $table->string('tin')->nullable();
             $table->string('level')->nullable();
             $table->string('address')->nullable();
+            $table->string('tax_rule');
             $table->string('custom_field1')->nullable();
             $table->string('custom_field2')->nullable();
             $table->string('custom_field3')->nullable();

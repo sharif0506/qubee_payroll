@@ -19,6 +19,7 @@ class CreateTaxSlabsTable extends Migration
             $table->integer('amount');
             $table->integer('tax_rate');
             $table->string('condition');
+            $table->string('remark')->nullable();
             $table->timestamps();
         });
     }

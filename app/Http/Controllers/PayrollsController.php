@@ -29,6 +29,13 @@ class PayrollsController extends Controller {
             'income_year' => 'required',
             'month' => 'required'
         ]);
+        $payrollExist = Payroll::where('month', $request->month)
+                ->where('income_year', $request->income_year)
+                ->first();
+        if ($payrollExist != NULL) {
+            return redirect()->back()->withErrors("Payroll already generated for month: "
+                            . $request->month . " , income year:  " . $request->income_year);
+        }
         if ($request->hasFile('additional_file')) {
             if ($request->file('additional_file')->getClientOriginalExtension() != "csv") {
                 return redirect()->back()->withErrors("You must upload the additional income file in csv format");
@@ -227,11 +234,10 @@ class PayrollsController extends Controller {
         }
         EmployeeYearlyTotalTax::updateOrCreate([
             'employee_id' => $employeeID, 'income_year' => $incomeYear
-            ], 
-            ['income_tax_amount' => $incomeTax,
+                ], ['income_tax_amount' => $incomeTax,
             'income_tax_rebate' => $totalTaxRebate,
             'final_tax_amount' => $finalIncomeTax
-            ]
+                ]
         );
         $this->monthlyIncomeTaxProcess($employeeID, ceil($finalIncomeTax / 12), $month, $incomeYear);
     }
