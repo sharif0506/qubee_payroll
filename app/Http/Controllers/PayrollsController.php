@@ -192,7 +192,8 @@ class PayrollsController extends Controller {
 
         $taxableIncome = $totalTaxableIncome;
         $incomeTax = 0;
-        $taxSlabs = TaxSlab::all();
+        $employeeData = Employee::where('employee_id', $employeeID)->first();
+        $taxSlabs = TaxSlab::where('tax_rule', $employeeData->details->tax_rule)->get();
         foreach ($taxSlabs as $taxSlab) {
             if (($taxableIncome - $taxSlab->amount ) > 0) {
                 $incomeSlab = $taxableIncome - $taxSlab->amount;

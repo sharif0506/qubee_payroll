@@ -18,7 +18,7 @@ class CreateTaxSlabsTable extends Migration
             $table->string('slab_order');            
             $table->integer('amount');
             $table->integer('tax_rate');
-            $table->string('condition');
+            $table->string('tax_rule');
             $table->string('remark')->nullable();
             $table->timestamps();
         });

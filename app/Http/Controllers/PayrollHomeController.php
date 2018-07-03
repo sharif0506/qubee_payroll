@@ -23,10 +23,15 @@ class PayrollHomeController extends Controller {
             $incomeYear = $request->income_year;
             $month = $request->month;
         } else {
-//        $incomeYear last income year 
 //        last month of payroll 
-            $incomeYear = "2018-2019";
-            $month = "July";
+            $payroll = Payroll::orderBy('created_at', 'desc')->first();
+            if ($payroll != NULL) {
+                $incomeYear = $payroll->income_year;
+                $month = $payroll->month;
+            } else {
+                $incomeYear = "2018-2019";
+                $month = "July";
+            }
         }
 
         $employeePayroll = EmployeeMonthlyIncome::where('employee_id', $employeeInfo->employee_id)
@@ -100,7 +105,8 @@ class PayrollHomeController extends Controller {
     }
 
     private function getEmployeeTaxData($employeeData, $totalTaxableIncome) {
-        $taxSlabs = TaxSlab::all(); //select all tax slab where condition is gender
+//        $taxSlabs = TaxSlab::all(); //select all tax slab where condition is gender
+        $taxSlabs = TaxSlab::where('tax_rule', $employeeData->details->tax_rule)->get();
         $taxData = array();
         $incomeSlab = 0;
         foreach ($taxSlabs as $taxSlab) {
@@ -109,9 +115,10 @@ class PayrollHomeController extends Controller {
             } else {
                 $incomeSlab = $totalTaxableIncome;
             }
+            $amount = ($taxSlab->remark == 'on_remaining_balance') ? NULL : $taxSlab->amount;
             array_push($taxData, [
                 "slab_order" => $taxSlab->slab_order,
-                "amount" => $taxSlab->amount,
+                "amount" => $amount,
                 "tax_rate" => $taxSlab->tax_rate,
                 "taxable_income" => $incomeSlab,
                 "calculated_tax" => ($incomeSlab * ($taxSlab->tax_rate / 100)),
