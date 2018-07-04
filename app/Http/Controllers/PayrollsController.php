@@ -50,7 +50,9 @@ class PayrollsController extends Controller {
         }
         $employees = Employee::where("status", "Active")->get();
         foreach ($employees as $employee) {
-            $this->monthlyIncomeProcess($employee->employee_id, $request->month, $request->income_year);
+            if ($this->isFractionMonth($employee->details->date_of_join, $employee->details->date_of_leave, $request->month, $request->income_year) == FALSE) {
+                $this->monthlyIncomeProcess($employee->employee_id, $request->month, $request->income_year);
+            }
             $this->monthlyTaxProcess($employee->employee_id, $request->month, $request->income_year);
         }
         $payroll = new Payroll();
@@ -394,6 +396,35 @@ class PayrollsController extends Controller {
         $employeeTax->tax_exempted_amount = $salaryAmount - $taxableAmount;
         $employeeTax->income_year = $incomeYear;
         $employeeTax->save();
+    }
+
+    private function isFractionMonth($employeeDateOfJoin, $employeeDateOfLeave, $payrollMonth, $incomeYear) {
+        $month = date("m", strtotime($payrollMonth));
+        $payrollMonthStart = substr($incomeYear, 0, 4) . "-" . $month . "-01";
+        if ((strtotime($employeeDateOfJoin)) > (strtotime($payrollMonthStart))) {
+            return TRUE;
+        }
+        if ($employeeDateOfLeave == NULL) {
+            return FALSE;
+        }
+        $payrollMonthEnd = date('Y-m-d', strtotime('+1 month', strtotime($payrollMonthStart)));
+        if ((strtotime($employeeDateOfLeave)) < (strtotime($payrollMonthEnd))) {
+            return TRUE;
+        }
+        return FALSE;
+    }
+
+    private function getYear($month, $incomeYear) {
+        $year = NULL;
+        $firstHalf = array("January", "February", "March", "April", "May", "June");
+        $secondHalf = array("July", "August", "September", "October", "November", "December");
+        if (in_array($month, $firstHalf)) {
+            $year = substr($incomeYear, 0, 4);
+        }
+        if (in_array($month, $secondHalf)) {
+            $year = substr($incomeYear, 5, 4);
+        }
+        return $year;
     }
 
 }
