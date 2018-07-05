@@ -16,7 +16,6 @@ Route::group(['middleware' => 'not.authenticated.employee'], function() {
     Route::get('/', 'EmployeeAuthenticationController@showLogin');
     Route::get('/login', 'EmployeeAuthenticationController@showLogin');
     Route::post('/login', 'EmployeeAuthenticationController@login');
-
 });
 
 Route::group(['middleware' => 'authenticated.employee'], function() {
@@ -71,19 +70,20 @@ Route::group(['middleware' => 'authenticated.admin'], function() {
     Route::get('/admin/deduction/edit/{id}', 'DeductionsController@showEdit')->where('id', '[0-9]+');
     Route::post('/admin/deduction/edit/{id}', 'DeductionsController@edit')->where('id', '[0-9]+');
     Route::get('/admin/deduction/delete/{id}', 'DeductionsController@delete')->where('id', '[0-9]+');
- 
-    
+
+
     Route::get('/admin/employee', 'EmployeesController@index');
     Route::get('/admin/employee/add', 'EmployeesController@showAdd');
     Route::post('/admin/employee/add', 'EmployeesController@add');
     Route::get('/admin/employee', 'EmployeesController@index');
     Route::get('/admin/employee', 'EmployeesController@index');
-    
-    
+
+
     Route::get('/admin/payroll', 'PayrollsController@index');
     Route::post('/admin/payroll', 'PayrollsController@generatePayroll');
-       
-    
+
+    Route::get('/admin/taxslab', 'TaxSlabsController@index');
+    Route::get('/admin/taxslab/add', 'TaxSlabsController@showAdd');
 });
 
 Route::get('/logout', 'EmployeeAuthenticationController@logout');
