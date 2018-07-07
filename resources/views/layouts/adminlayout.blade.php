@@ -38,7 +38,8 @@
                             <ul class="dropdown-menu">
                                 <li><a href="{{ url('/admin/salary') }}"> Salary Management </a></li>
                                 <li><a href="{{  url('/admin/deduction') }}"> Deduction Manage </a></li>
-                                <li><a href="#">Manage Income Tax</a> </li>
+                                <li><a href="{{  url('/admin/taxslab') }}"> Manage Income Tax </a> </li>
+                                <li><a href="{{  url('/admin/taxrebateslab') }}"> Manage Tax Rebate </a> </li>
                             </ul>
                         </li>
                        

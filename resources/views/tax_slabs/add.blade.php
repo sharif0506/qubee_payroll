@@ -32,7 +32,7 @@
 
                 <div class="form-group">
                     <label> Tax Rate: </label>
-                    <input class="form-control input-sm" placeholder="Tax Rate" name="amount" type="tax_rate" value="{{ old('tax_rate') }}" autocomplete="off" spellcheck="false" required />
+                    <input class="form-control input-sm" placeholder="Tax Rate" name="tax_rate" type="number" value="{{ old('tax_rate') }}" autocomplete="off"  required />
                 </div>
 
                 <div class="form-group">

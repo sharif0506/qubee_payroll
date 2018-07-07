@@ -26,8 +26,8 @@
                 <div class="form-group">
                     <label> Status: </label>
                     <select class="form-control"  name="status" required >
-                        <option value="Active" {{ $department->status == 'Active' ? 'selected="selected"' : '' }}>Active</option>
-                        <option value="Deactive" {{ $department->status == 'Deactive' ? 'selected="selected"' : '' }}>Deactive</option>
+                        <option value="Active" {{ $subDepartment->status == 'Active' ? 'selected="selected"' : '' }}>Active</option>
+                        <option value="Deactive" {{ $subDepartment->status == 'Deactive' ? 'selected="selected"' : '' }}>Deactive</option>
                     </select>
                 </div>
 

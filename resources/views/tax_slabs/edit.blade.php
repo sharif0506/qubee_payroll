@@ -1,9 +1,9 @@
 @extends('layouts.adminlayout')
-@section('title','Edit Sub Department')
+@section('title','Edit Tax Slab')
 
 @section('content')
 <div class="row vertical-offset-100">
-    <h3 class="text-center"> Edit Sub Department </h3>
+    <h3 class="text-center"> Edit Tax Slab </h3>
     <hr />
 
     <div class="col-md-4 col-md-offset-4">
@@ -11,32 +11,40 @@
             <fieldset>
                 {{ csrf_field() }} 
                 <div class="form-group">
-                    <input class="form-control" placeholder="Sub Department's Name" name="name" type="text" value="{{ $subDepartment->name }}" autocomplete="off" spellcheck="false" required />
+                    <label> Slab Order: </label>
+                    <input class="form-control input-sm" placeholder="Tax Slab Order" name="slab_order" type="number" value="{{ $taxSlab->slab_order }}" autocomplete="off" spellcheck="false" required />
                 </div>
 
                 <div class="form-group">
-                    <label> Department: </label>
-                    <select class="form-control"  name="department_id" required >
-                        @foreach($departments as $department)
-                        <option value="{{$department->id}}" {{ $department->id == $subDepartment->department_id ? 'selected="selected"' : '' }} > {{$department->name}} </option>
-                        @endforeach
+                    <label> Amount: </label>
+                    <input class="form-control input-sm" placeholder="Tax Slab Amount" name="amount" type="number" value="{{ $taxSlab->amount }}" autocomplete="off" spellcheck="false" required />
+                </div>
+
+                <div class="form-group">
+                    <label> Tax Rule: </label>
+                    <select class="form-control input-sm"  name="tax_rule" required >                    
+                        <option value="Male" {{ $taxSlab->tax_rule == 'Male' ? 'selected="selected"' : '' }} > Male </option>
+                        <option value="Female" {{ $taxSlab->tax_rule == 'Female' ? 'selected="selected"' : '' }} > Female </option>
+                        <option value="Aged" {{ $taxSlab->tax_rule == 'Aged' ? 'selected="selected"' : '' }} > Aged </option>
+                        <option value="Disabled" {{ $taxSlab->tax_rule == 'Disabled' ? 'selected="selected"' : '' }} > Disabled </option>
                     </select>
                 </div>
 
                 <div class="form-group">
-                    <label> Status: </label>
-                    <select class="form-control"  name="status" required >
-                        <option value="Active" {{ $department->status == 'Active' ? 'selected="selected"' : '' }}>Active</option>
-                        <option value="Deactive" {{ $department->status == 'Deactive' ? 'selected="selected"' : '' }}>Deactive</option>
-                    </select>
+                    <label> Tax Rate: </label>
+                    <input class="form-control input-sm" placeholder="Tax Rate" name="tax_rate" type="number" value="{{ $taxSlab->tax_rate }}" autocomplete="off" spellcheck="false" required />
                 </div>
 
                 <div class="form-group">
-                    <input class="btn btn-success btn-block" type="submit" value="Edit Sub Department" />
+                    <input  type="checkbox" name="remark" value="on_remaining_balance" {{ $taxSlab->remark == 'on_remaining_balance' ? 'checked="checked"' : '' }}> Slab will be on remaining balance  <br>
                 </div>
 
-                <a href="{{ url("/admin/subdepartment") }}" class="btn btn-primary form-control" >
-                    Back to Sub Department Management
+                <div class="form-group">
+                    <input class="btn btn-success btn-block" type="submit" value="Edit Tax Slab" />
+                </div>
+
+                <a href="{{ url("/admin/taxslab") }}" class="btn btn-primary form-control" >
+                    Back to Tax Slab Management
                 </a> 
             </fieldset>
 
@@ -59,10 +67,7 @@
             </div>
             @endif
         </form>
-
-
     </div>
-
 </div>
 @endsection
 

@@ -82,8 +82,21 @@ Route::group(['middleware' => 'authenticated.admin'], function() {
     Route::get('/admin/payroll', 'PayrollsController@index');
     Route::post('/admin/payroll', 'PayrollsController@generatePayroll');
 
+    
     Route::get('/admin/taxslab', 'TaxSlabsController@index');
     Route::get('/admin/taxslab/add', 'TaxSlabsController@showAdd');
+    Route::post('/admin/taxslab/add', 'TaxSlabsController@add');
+    Route::get('/admin/taxslab/edit/{id}', 'TaxSlabsController@showEdit')->where('id', '[0-9]+');
+    Route::post('/admin/taxslab/edit/{id}', 'TaxSlabsController@edit')->where('id', '[0-9]+');
+    Route::get('/admin/taxslab/delete/{id}', 'TaxSlabsController@delete')->where('id', '[0-9]+');
+   
+    
+    Route::get('/admin/taxrebateslab', 'TaxRebateSlabsController@index');
+    Route::get('/admin/taxrebateslab/add', 'TaxRebateSlabsController@showAdd');
+    Route::post('/admin/taxrebateslab/add', 'TaxRebateSlabsController@add');
+    Route::get('/admin/taxrebateslab/edit/{id}', 'TaxRebateSlabsController@showEdit')->where('id', '[0-9]+');
+    Route::post('/admin/taxrebateslab/edit/{id}', 'TaxRebateSlabsController@edit')->where('id', '[0-9]+');
+    Route::get('/admin/taxrebateslab/delete/{id}', 'TaxRebateSlabsController@delete')->where('id', '[0-9]+');
 });
 
 Route::get('/logout', 'EmployeeAuthenticationController@logout');
