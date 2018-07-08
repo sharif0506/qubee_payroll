@@ -2,7 +2,7 @@
 @section('title','Home')
 
 @section('content')
-
+<script src="https://unpkg.com/jspdf@latest/dist/jspdf.min.js"></script>
 <br>
 
 <form method="post" action="{{url("/home")}}">
@@ -53,12 +53,12 @@
         <!-- Modal content-->
         <div class="modal-content">
             <div class="modal-header">
-                <button id="pdf-button" type="button" class="btn btn-default" onclick="downloadPDF()">Save as PDF</button>
-                <button type="button" class="btn btn-default print" onClick="window.print(); return false">Print</button>
+                <!--<button id="pdf-button" type="button" class="btn btn-default" onclick="">Save as PDF</button>-->
+                <!--<button type="button" class="btn btn-default print" onClick="window.print(); return false">Print</button>-->
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
             <div class="modal-header">
-                <h4>Augree Wireless Broadband Bangladesh Ltd.</h4>                
+                <h4 class="text-center"> Augree Wireless Broadband Bangladesh Ltd. </h4>                
             </div>
             <div class="modal-body">
 
@@ -117,8 +117,8 @@
         <!-- Modal content-->
         <div class="modal-content">
             <div class="modal-header">
-                <button id="pdf-button" type="button" class="btn btn-default" onclick="downloadPDF()">Save as PDF</button>
-                <button type="button" class="btn btn-default print" onClick="window.print(); return false">Print</button>
+                <button id="pdf-button" type="button" class="btn btn-default" onclick="savePayslip()">Save as PDF</button>                
+                <!--<button type="button" class="btn btn-default print" onClick="window.print(); return false">Print</button>-->
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
             <div class="modal-body">
@@ -308,12 +308,15 @@
 
         <!-- Modal content-->
         <div class="modal-content">
+            
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title text-center">Income Tax Computation</h4>                
-            </div>
+                <button id="pdf-button" type="button" class="btn btn-default" onclick="saveTaxCalculation()">Save as PDF</button>                
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>   
+            
             <div class="modal-body">
                 @if(count($employeeYearlyTaxes) > 0)
+                <h4 class="text-center">Income Tax Computation</h4> 
                 <p class="text-center">Income Year : {{$incomeYear}}</p>
                 <table class="table">
                     <tr>
@@ -439,36 +442,63 @@
 
 <!--Javascript Code -->
 <script>
-        <!--Print-->
-        (function ($) {
-                            $(document).ready(function () {
-// Add Print Classes for Modal
-                    $('.modal').on('shown.bs.modal', function () {
-                    $('.modal,.m odal-backdrop').addC lass('toPrint');
-                    $('body').addClass('non-print');
-            });
-            // Remove classes                     $('.modal').on('hidden.bs.modal', function () {
-                            $('.modal,.modal-backdrop').removeClass('toPrint');
-                    $('body').removeClass('non-print');
-            });
-            });
-            })
-            < !--End this part-- >
-            < !--Download PDF-- >
-            var downloadPDF = function() {
-                            DocRaptor.createAndDownloadDoc("YOUR_API_KEY_HERE", {
-                            test: true, // test documents are free, but watermarked
-                                    type:"pdf",
-                                    document_content: document.querySelector('html').innerHTML, // use this page's HTML
-// document_content: "<h1>Hello world!</h1>",               // or supply HTML directly
-// document_url: "http://example.com/your-page",            // or use a URL
-// javascript: true,                                        // enable JavaScript processing
-// prince_options: {
-//   media: "screen",                                       // use screen styles instead of print styles
-// }
-})
-}
-	     
+    function savePayslip() {
+        var pdf = new jsPDF('p', 'pt', 'letter');
+        source = $('#myModal2')[0];
+        specialElementHandlers = {
+            '#bypassme': function (element, renderer) {
+                return true
+            }
+        }
+        margins = {
+            top: 50,
+            left: 60,
+            width: 545
+        };
+        pdf.fromHTML(
+                source // HTML string or DOM elem ref.
+                , margins.left // x coord
+                , margins.top // y coord
+                , {
+                    'width': margins.width // max width of content on PDF
+                    , 'elementHandlers': specialElementHandlers
+                },
+                function (dispose) {
+                    // dispose: object with X, Y of the last line add to the PDF
+                    //          this allow the insertion of new lines after html
+                    pdf.save('payslip.pdf');
+                }
+        )
+    }
+    
+    function saveTaxCalculation() {
+        var pdf = new jsPDF('p', 'pt', 'letter');
+        source = $('#myModal4')[0];
+        specialElementHandlers = {
+            '#bypassme': function (element, renderer) {
+                return true
+            }
+        }
+        margins = {
+            top: 50,
+            left: 60,
+            width: 545
+        };
+        pdf.fromHTML(
+                source // HTML string or DOM elem ref.
+                , margins.left // x coord
+                , margins.top // y coord
+                , {
+                    'width': margins.width // max width of content on PDF
+                    , 'elementHandlers': specialElementHandlers
+                },
+                function (dispose) {
+                    // dispose: object with X, Y of the last line add to the PDF
+                    //          this allow the insertion of new lines after html
+                    pdf.save('doc.pdf');
+                }
+        )
+    }
 </script>
 
 @endsection

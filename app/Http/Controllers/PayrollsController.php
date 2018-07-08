@@ -400,7 +400,7 @@ class PayrollsController extends Controller {
 
     private function isFractionMonth($employeeDateOfJoin, $employeeDateOfLeave, $payrollMonth, $incomeYear) {
         $month = date("m", strtotime($payrollMonth));
-        $payrollMonthStart = substr($incomeYear, 0, 4) . "-" . $month . "-01";
+        $payrollMonthStart = $this->getYear($payrollMonth, $incomeYear) . "-" . $month . "-01";
         if ((strtotime($employeeDateOfJoin)) > (strtotime($payrollMonthStart))) {
             return TRUE;
         }
